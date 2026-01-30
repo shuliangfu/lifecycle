@@ -36,7 +36,7 @@
  */
 
 // 导出核心类
-export { LifecycleManager } from "./manager.ts";
+export { createLifecycleManager, LifecycleManager } from "./manager.ts";
 export type { LifecycleManagerOptions } from "./manager.ts";
 
 // 导出类型

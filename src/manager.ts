@@ -11,11 +11,14 @@ import type {
   LifecycleStage,
 } from "./types.ts";
 import { getStageDescription, isValidTransition } from "./types.ts";
+import type { ServiceContainer } from "@dreamer/service";
 
 /**
  * 生命周期管理器选项
  */
 export interface LifecycleManagerOptions {
+  /** 管理器名称（用于服务容器识别） */
+  name?: string;
   /** 是否在阶段转换时自动触发事件（默认：true） */
   autoEmitEvents?: boolean;
   /** 超时时间（毫秒），如果钩子执行超时则抛出错误（默认：无超时） */
@@ -38,7 +41,13 @@ export class LifecycleManager {
   private eventEmitter: EventEmitter = new EventEmitter();
 
   /** 配置选项 */
-  private options: Required<LifecycleManagerOptions>;
+  private options: Omit<Required<LifecycleManagerOptions>, "name">;
+
+  /** 服务容器实例 */
+  private container?: ServiceContainer;
+
+  /** 管理器名称 */
+  private readonly managerName: string;
 
   /**
    * 创建生命周期管理器实例
@@ -50,6 +59,45 @@ export class LifecycleManager {
       autoEmitEvents: options.autoEmitEvents ?? true,
       timeout: options.timeout ?? 0, // 0 表示无超时
     };
+    this.managerName = options.name || "default";
+  }
+
+  /**
+   * 获取管理器名称
+   * @returns 管理器名称
+   */
+  getName(): string {
+    return this.managerName;
+  }
+
+  /**
+   * 设置服务容器
+   * @param container 服务容器实例
+   */
+  setContainer(container: ServiceContainer): void {
+    this.container = container;
+  }
+
+  /**
+   * 获取服务容器
+   * @returns 服务容器实例，如果未设置则返回 undefined
+   */
+  getContainer(): ServiceContainer | undefined {
+    return this.container;
+  }
+
+  /**
+   * 从服务容器创建 LifecycleManager 实例
+   * @param container 服务容器实例
+   * @param name 管理器名称（默认 "default"）
+   * @returns 关联了服务容器的 LifecycleManager 实例
+   */
+  static fromContainer(
+    container: ServiceContainer,
+    name = "default",
+  ): LifecycleManager | undefined {
+    const serviceName = `lifecycle:${name}`;
+    return container.tryGet<LifecycleManager>(serviceName);
   }
 
   /**
@@ -293,4 +341,16 @@ export class LifecycleManager {
     this.hooks.clear();
     this.eventEmitter.removeAllListeners();
   }
+}
+
+/**
+ * 创建 LifecycleManager 的工厂函数
+ * 用于服务容器注册
+ * @param options 生命周期管理器配置选项
+ * @returns LifecycleManager 实例
+ */
+export function createLifecycleManager(
+  options?: LifecycleManagerOptions,
+): LifecycleManager {
+  return new LifecycleManager(options);
 }

@@ -3,7 +3,8 @@
 > 一个兼容 Deno 和 Bun 的应用生命周期管理库，提供完整的应用生命周期管理功能
 
 [![JSR](https://jsr.io/badges/@dreamer/lifecycle)](https://jsr.io/@dreamer/lifecycle)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
+[![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./TEST_REPORT.md)
 
 ---
 
@@ -14,7 +15,8 @@
 ## ✨ 特性
 
 - **完整的生命周期阶段管理**：
-  - 定义标准的生命周期阶段（uninitialized → initialized → ready → stopped → shutdown）
+  - 定义标准的生命周期阶段（uninitialized → initialized → ready → stopped →
+    shutdown）
   - 管理阶段转换和状态查询
   - 支持阶段转换验证和错误回滚
 
@@ -37,6 +39,11 @@
 - **超时控制**：
   - 可配置的钩子执行超时
   - 超时自动抛出错误
+
+- **服务容器集成**：
+  - 支持 `@dreamer/service` 依赖注入
+  - 管理多个 LifecycleManager 实例
+  - 提供 `createLifecycleManager` 工厂函数
 
 ## 📦 安装
 
@@ -150,9 +157,9 @@ lifecycle.on("shutdown", async () => {
 
 // 执行完整的生命周期
 await lifecycle.initialize(); // 1, 2
-await lifecycle.start();      // 3, 4, 5
-await lifecycle.stop();       // 6, 7
-await lifecycle.shutdown();    // 8, 9
+await lifecycle.start(); // 3, 4, 5
+await lifecycle.stop(); // 6, 7
+await lifecycle.shutdown(); // 8, 9
 ```
 
 ### 事件监听
@@ -242,11 +249,14 @@ new LifecycleManager(options?: LifecycleManagerOptions)
 创建一个新的生命周期管理器实例。
 
 **参数**：
+
 - `options?: LifecycleManagerOptions` - 配置选项
   - `autoEmitEvents?: boolean` - 是否在阶段转换时自动触发事件（默认：true）
-  - `timeout?: number` - 超时时间（毫秒），如果钩子执行超时则抛出错误（默认：0，无超时）
+  - `timeout?: number` -
+    超时时间（毫秒），如果钩子执行超时则抛出错误（默认：0，无超时）
 
 **示例**：
+
 ```typescript
 const lifecycle = new LifecycleManager({
   autoEmitEvents: true,
@@ -261,10 +271,12 @@ const lifecycle = new LifecycleManager({
 注册生命周期钩子。
 
 **参数**：
+
 - `stage: LifecycleStage` - 生命周期阶段
 - `hook: LifecycleHook` - 钩子函数（可以是同步或异步）
 
 **示例**：
+
 ```typescript
 lifecycle.on("initializing", async () => {
   console.log("初始化中...");
@@ -276,10 +288,12 @@ lifecycle.on("initializing", async () => {
 移除生命周期钩子。
 
 **参数**：
+
 - `stage: LifecycleStage` - 生命周期阶段
 - `hook: LifecycleHook` - 要移除的钩子函数
 
 **示例**：
+
 ```typescript
 const hook = () => console.log("钩子");
 lifecycle.on("initializing", hook);
@@ -291,10 +305,12 @@ lifecycle.off("initializing", hook);
 注册事件监听器。
 
 **参数**：
+
 - `event: string` - 事件名称
 - `listener: LifecycleEventListener` - 监听器函数
 
 **示例**：
+
 ```typescript
 lifecycle.addEventListener("lifecycle:ready", (data) => {
   console.log("应用已就绪:", data);
@@ -306,6 +322,7 @@ lifecycle.addEventListener("lifecycle:ready", (data) => {
 移除事件监听器。
 
 **参数**：
+
 - `event: string` - 事件名称
 - `listener: LifecycleEventListener` - 要移除的监听器函数
 
@@ -314,10 +331,12 @@ lifecycle.addEventListener("lifecycle:ready", (data) => {
 触发事件。
 
 **参数**：
+
 - `event: string` - 事件名称
 - `...args: unknown[]` - 事件参数
 
 **示例**：
+
 ```typescript
 lifecycle.emit("custom:event", { message: "Hello" });
 ```
@@ -327,6 +346,7 @@ lifecycle.emit("custom:event", { message: "Hello" });
 初始化应用。将应用从 `uninitialized` 转换到 `initialized`。
 
 **示例**：
+
 ```typescript
 await lifecycle.initialize();
 ```
@@ -336,6 +356,7 @@ await lifecycle.initialize();
 启动应用。将应用从 `initialized` 转换到 `ready`。
 
 **示例**：
+
 ```typescript
 await lifecycle.start();
 ```
@@ -345,6 +366,7 @@ await lifecycle.start();
 停止应用。将应用从 `ready` 或 `started` 转换到 `stopped`。
 
 **示例**：
+
 ```typescript
 await lifecycle.stop();
 ```
@@ -354,6 +376,7 @@ await lifecycle.stop();
 关闭应用。将应用从 `stopped` 转换到 `shutdown`。
 
 **示例**：
+
 ```typescript
 await lifecycle.shutdown();
 ```
@@ -365,6 +388,7 @@ await lifecycle.shutdown();
 **返回**：当前阶段
 
 **示例**：
+
 ```typescript
 const stage = lifecycle.getStage(); // "ready"
 ```
@@ -376,6 +400,7 @@ const stage = lifecycle.getStage(); // "ready"
 **返回**：是否已就绪
 
 **示例**：
+
 ```typescript
 if (lifecycle.isReady()) {
   console.log("应用已就绪");
@@ -389,6 +414,7 @@ if (lifecycle.isReady()) {
 **返回**：是否已关闭
 
 **示例**：
+
 ```typescript
 if (lifecycle.isShutdown()) {
   console.log("应用已关闭");
@@ -402,6 +428,7 @@ if (lifecycle.isShutdown()) {
 **返回**：阶段的中文描述
 
 **示例**：
+
 ```typescript
 const description = lifecycle.getStageDescription(); // "就绪"
 ```
@@ -411,6 +438,7 @@ const description = lifecycle.getStageDescription(); // "就绪"
 重置生命周期管理器。将阶段重置为 `uninitialized`，清除所有钩子和事件监听器。
 
 **示例**：
+
 ```typescript
 lifecycle.reset();
 ```
@@ -423,16 +451,16 @@ lifecycle.reset();
 
 ```typescript
 type LifecycleStage =
-  | "uninitialized"  // 未初始化
-  | "initializing"   // 初始化中
-  | "initialized"    // 初始化完成
-  | "starting"       // 启动中
-  | "started"        // 启动完成
-  | "ready"          // 就绪
-  | "stopping"       // 停止中
-  | "stopped"        // 停止完成
-  | "shutting-down"  // 关闭中
-  | "shutdown";      // 关闭完成
+  | "uninitialized" // 未初始化
+  | "initializing" // 初始化中
+  | "initialized" // 初始化完成
+  | "starting" // 启动中
+  | "started" // 启动完成
+  | "ready" // 就绪
+  | "stopping" // 停止中
+  | "stopped" // 停止完成
+  | "shutting-down" // 关闭中
+  | "shutdown"; // 关闭完成
 ```
 
 #### LifecycleHook
@@ -450,8 +478,67 @@ type LifecycleHook = () => void | Promise<void>;
 ```typescript
 interface LifecycleManagerOptions {
   autoEmitEvents?: boolean; // 是否自动触发事件（默认：true）
-  timeout?: number;         // 超时时间（毫秒，默认：0，无超时）
+  timeout?: number; // 超时时间（毫秒，默认：0，无超时）
 }
+```
+
+#### ServiceContainer 集成方法
+
+##### `getName(): string`
+
+获取管理器名称。
+
+**返回**：管理器名称
+
+##### `setContainer(container: ServiceContainer): void`
+
+设置服务容器。
+
+**参数**：
+
+- `container: ServiceContainer` - 服务容器实例
+
+##### `getContainer(): ServiceContainer | undefined`
+
+获取服务容器。
+
+**返回**：服务容器实例，如果未设置则返回 undefined
+
+##### `static fromContainer(container: ServiceContainer, name?: string): LifecycleManager | undefined`
+
+从服务容器获取 LifecycleManager 实例。
+
+**参数**：
+
+- `container: ServiceContainer` - 服务容器实例
+- `name?: string` - 管理器名称（默认 "default"）
+
+**返回**：LifecycleManager 实例，如果不存在则返回 undefined
+
+### createLifecycleManager 工厂函数
+
+用于服务容器注册的工厂函数。
+
+```typescript
+import {
+  createLifecycleManager,
+  LifecycleManager,
+} from "jsr:@dreamer/lifecycle";
+import { ServiceContainer } from "jsr:@dreamer/service";
+
+const container = new ServiceContainer();
+
+// 注册 LifecycleManager
+container.registerSingleton(
+  "lifecycle:app",
+  () => createLifecycleManager({ name: "app" }),
+);
+
+// 获取实例
+const lifecycle = container.get<LifecycleManager>("lifecycle:app");
+
+// 或者使用静态方法
+const sameLifecycle = LifecycleManager.fromContainer(container, "app");
 ```
 
 ### 工具函数
@@ -461,12 +548,14 @@ interface LifecycleManagerOptions {
 检查阶段转换是否有效。
 
 **参数**：
+
 - `from: LifecycleStage` - 源阶段
 - `to: LifecycleStage` - 目标阶段
 
 **返回**：是否有效
 
 **示例**：
+
 ```typescript
 import { isValidTransition } from "@dreamer/lifecycle";
 
@@ -479,11 +568,13 @@ const invalid = isValidTransition("uninitialized", "ready"); // false
 获取阶段的中文描述。
 
 **参数**：
+
 - `stage: LifecycleStage` - 生命周期阶段
 
 **返回**：中文描述
 
 **示例**：
+
 ```typescript
 import { getStageDescription } from "@dreamer/lifecycle";
 
@@ -520,18 +611,18 @@ shutdown
 
 ### 阶段说明
 
-| 阶段 | 说明 | 可转换到的阶段 |
-|------|------|---------------|
-| `uninitialized` | 未初始化 | `initializing` |
-| `initializing` | 初始化中 | `initialized`, `uninitialized`（回滚） |
-| `initialized` | 初始化完成 | `starting`, `uninitialized`（回滚） |
-| `starting` | 启动中 | `started`, `initialized`（回滚） |
-| `started` | 启动完成 | `ready`, `stopping`, `starting`（回滚） |
-| `ready` | 就绪 | `stopping`, `started`（回滚） |
-| `stopping` | 停止中 | `stopped`, `ready`（回滚） |
-| `stopped` | 停止完成 | `shutting-down`, `starting`（重新启动） |
-| `shutting-down` | 关闭中 | `shutdown`, `stopped`（回滚） |
-| `shutdown` | 已关闭 | 无（最终状态） |
+| 阶段            | 说明       | 可转换到的阶段                          |
+| --------------- | ---------- | --------------------------------------- |
+| `uninitialized` | 未初始化   | `initializing`                          |
+| `initializing`  | 初始化中   | `initialized`, `uninitialized`（回滚）  |
+| `initialized`   | 初始化完成 | `starting`, `uninitialized`（回滚）     |
+| `starting`      | 启动中     | `started`, `initialized`（回滚）        |
+| `started`       | 启动完成   | `ready`, `stopping`, `starting`（回滚） |
+| `ready`         | 就绪       | `stopping`, `started`（回滚）           |
+| `stopping`      | 停止中     | `stopped`, `ready`（回滚）              |
+| `stopped`       | 停止完成   | `shutting-down`, `starting`（重新启动） |
+| `shutting-down` | 关闭中     | `shutdown`, `stopped`（回滚）           |
+| `shutdown`      | 已关闭     | 无（最终状态）                          |
 
 ### 生命周期事件
 
@@ -659,12 +750,19 @@ addSignalListener("SIGTERM", async () => {
 
 ---
 
-## 📊 测试覆盖
+## 📊 测试报告
 
-- **总测试数**: 71 个测试用例
-- **测试文件**: 2 个测试文件
-- **通过率**: 100% ✅
-- **测试报告**: 详见 [TEST_REPORT.md](./TEST_REPORT.md)
+[![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./TEST_REPORT.md)
+
+| 测试类别                        | 测试数 | 状态        |
+| ------------------------------- | ------ | ----------- |
+| LifecycleManager 核心功能       | 51     | ✅ 通过     |
+| EventEmitter 事件系统           | 20     | ✅ 通过     |
+| ServiceContainer 集成           | 6      | ✅ 通过     |
+| createLifecycleManager 工厂函数 | 5      | ✅ 通过     |
+| **总计**                        | **82** | ✅ **100%** |
+
+详细测试报告请查看 [TEST_REPORT.md](./TEST_REPORT.md)
 
 ---
 

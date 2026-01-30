@@ -32,7 +32,10 @@ async function main() {
     await lifecycle.initialize();
     console.log("初始化成功（不应该执行到这里）");
   } catch (error) {
-    console.error("初始化失败:", error instanceof Error ? error.message : error);
+    console.error(
+      "初始化失败:",
+      error instanceof Error ? error.message : error,
+    );
     console.log("当前阶段:", lifecycle.getStage()); // 应该是 "uninitialized"
     console.log("生命周期已回滚到初始状态");
   }

@@ -2,8 +2,10 @@
  * 生命周期管理器测试
  */
 
+import { ServiceContainer } from "@dreamer/service";
 import { describe, expect, it } from "@dreamer/test";
 import {
+  createLifecycleManager,
   getStageDescription,
   isValidTransition,
   LifecycleManager,
@@ -1032,5 +1034,102 @@ describe("工具函数", () => {
       expect(getStageDescription("shutting-down")).toBe("关闭中");
       expect(getStageDescription("shutdown")).toBe("已关闭");
     });
+  });
+});
+
+describe("LifecycleManager ServiceContainer 集成", () => {
+  it("应该获取默认管理器名称", () => {
+    const manager = new LifecycleManager();
+    expect(manager.getName()).toBe("default");
+  });
+
+  it("应该获取自定义管理器名称", () => {
+    const manager = new LifecycleManager({ name: "custom" });
+    expect(manager.getName()).toBe("custom");
+  });
+
+  it("应该设置和获取服务容器", () => {
+    const manager = new LifecycleManager();
+    const container = new ServiceContainer();
+
+    expect(manager.getContainer()).toBeUndefined();
+
+    manager.setContainer(container);
+    expect(manager.getContainer()).toBe(container);
+  });
+
+  it("应该从服务容器获取 LifecycleManager", () => {
+    const container = new ServiceContainer();
+    const manager = new LifecycleManager({ name: "test" });
+    manager.setContainer(container);
+
+    container.registerSingleton("lifecycle:test", () => manager);
+
+    const retrieved = LifecycleManager.fromContainer(container, "test");
+    expect(retrieved).toBe(manager);
+  });
+
+  it("应该在服务不存在时返回 undefined", () => {
+    const container = new ServiceContainer();
+    const retrieved = LifecycleManager.fromContainer(container, "non-existent");
+    expect(retrieved).toBeUndefined();
+  });
+
+  it("应该支持多个 LifecycleManager 实例", () => {
+    const container = new ServiceContainer();
+
+    const appManager = new LifecycleManager({ name: "app" });
+    appManager.setContainer(container);
+
+    const workerManager = new LifecycleManager({ name: "worker" });
+    workerManager.setContainer(container);
+
+    container.registerSingleton("lifecycle:app", () => appManager);
+    container.registerSingleton("lifecycle:worker", () => workerManager);
+
+    expect(LifecycleManager.fromContainer(container, "app")).toBe(appManager);
+    expect(LifecycleManager.fromContainer(container, "worker")).toBe(
+      workerManager,
+    );
+  });
+});
+
+describe("createLifecycleManager 工厂函数", () => {
+  it("应该创建 LifecycleManager 实例", () => {
+    const manager = createLifecycleManager();
+    expect(manager).toBeInstanceOf(LifecycleManager);
+  });
+
+  it("应该使用默认名称", () => {
+    const manager = createLifecycleManager();
+    expect(manager.getName()).toBe("default");
+  });
+
+  it("应该使用自定义名称", () => {
+    const manager = createLifecycleManager({ name: "custom" });
+    expect(manager.getName()).toBe("custom");
+  });
+
+  it("应该能够在服务容器中注册", () => {
+    const container = new ServiceContainer();
+
+    container.registerSingleton(
+      "lifecycle:main",
+      () => createLifecycleManager({ name: "main" }),
+    );
+
+    const manager = container.get<LifecycleManager>("lifecycle:main");
+    expect(manager).toBeInstanceOf(LifecycleManager);
+    expect(manager.getName()).toBe("main");
+  });
+
+  it("应该支持生命周期操作", async () => {
+    const manager = createLifecycleManager();
+
+    await manager.initialize();
+    expect(manager.getStage()).toBe("initialized");
+
+    await manager.start();
+    expect(manager.isReady()).toBe(true);
   });
 });
