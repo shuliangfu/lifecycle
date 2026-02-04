@@ -192,16 +192,18 @@ export class LifecycleManager {
       // 创建执行钩子的 Promise 数组
       const hookPromises = Array.from(stageHooks).map(async (hook) => {
         try {
-          // 如果有超时配置，使用 Promise.race
+          // 如果有超时配置，使用 Promise.race，并保存 timeoutId 以便钩子完成时清除，防止内存泄漏
           if (this.options.timeout > 0) {
+            let timeoutId: ReturnType<typeof setTimeout>;
+            const timeoutPromise = new Promise<never>((_, reject) => {
+              timeoutId = setTimeout(
+                () => reject(new Error(`钩子执行超时 (${targetStage})`)),
+                this.options.timeout,
+              );
+            });
             await Promise.race([
-              Promise.resolve(hook()),
-              new Promise<never>((_, reject) => {
-                setTimeout(
-                  () => reject(new Error(`钩子执行超时 (${targetStage})`)),
-                  this.options.timeout,
-                );
-              }),
+              Promise.resolve(hook()).finally(() => clearTimeout(timeoutId!)),
+              timeoutPromise,
             ]);
           } else {
             await Promise.resolve(hook());
