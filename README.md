@@ -1,6 +1,8 @@
 # @dreamer/lifecycle
 
-> 一个兼容 Deno 和 Bun 的应用生命周期管理库，提供完整的应用生命周期管理功能
+> Application lifecycle management library compatible with Deno and Bun, providing full lifecycle management
+
+English | [中文 (Chinese)](./README-zh.md)
 
 [![JSR](https://jsr.io/badges/@dreamer/lifecycle)](https://jsr.io/@dreamer/lifecycle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
@@ -8,189 +10,188 @@
 
 ---
 
-## 🎯 功能
+## 🎯 Features
 
-应用生命周期管理库，用于管理应用的完整生命周期，包括初始化、启动、运行、停止和关闭等阶段。
+Application lifecycle management library for managing the full application lifecycle, including initialization, startup, running, stopping, and shutdown.
 
-## ✨ 特性
+## ✨ Capabilities
 
-- **完整的生命周期阶段管理**：
-  - 定义标准的生命周期阶段（uninitialized → initialized → ready → stopped →
-    shutdown）
-  - 管理阶段转换和状态查询
-  - 支持阶段转换验证和错误回滚
+- **Full lifecycle stage management**:
+  - Standard lifecycle stages (uninitialized → initialized → ready → stopped → shutdown)
+  - Stage transition and state query management
+  - Stage transition validation and error rollback
 
-- **生命周期钩子系统**：
-  - 注册生命周期钩子（on、off）
-  - 支持同步和异步钩子
-  - 支持多个钩子按顺序执行
-  - 钩子执行错误自动回滚
+- **Lifecycle hook system**:
+  - Register lifecycle hooks (on, off)
+  - Support sync and async hooks
+  - Multiple hooks execute in order
+  - Automatic rollback on hook execution errors
 
-- **事件系统**：
-  - 自动触发生命周期事件
-  - 支持自定义事件
-  - 事件发布/订阅模式
+- **Event system**:
+  - Auto-emit lifecycle events
+  - Custom events
+  - Publish/subscribe pattern
 
-- **错误处理**：
-  - 钩子执行错误自动捕获
-  - 阶段转换失败自动回滚
-  - 详细的错误信息
+- **Error handling**:
+  - Auto-capture hook execution errors
+  - Auto-rollback on failed stage transitions
+  - Detailed error messages
 
-- **超时控制**：
-  - 可配置的钩子执行超时
-  - 超时自动抛出错误
+- **Timeout control**:
+  - Configurable hook execution timeout
+  - Auto-throw on timeout
 
-- **服务容器集成**：
-  - 支持 `@dreamer/service` 依赖注入
-  - 管理多个 LifecycleManager 实例
-  - 提供 `createLifecycleManager` 工厂函数
+- **Service container integration**:
+  - Works with `@dreamer/service` dependency injection
+  - Manage multiple LifecycleManager instances
+  - `createLifecycleManager` factory function
 
-## 📦 安装
+## 📦 Installation
 
 ```bash
 deno add jsr:@dreamer/lifecycle
 ```
 
-## 🌍 环境兼容性
+## 🌍 Environment Compatibility
 
-- **运行时要求**：Deno 2.6+ 或 Bun 1.3.5
-- **服务端**：✅ 支持（兼容 Deno 和 Bun 运行时，生命周期管理是服务端概念）
-- **客户端**：❌ 不支持（浏览器环境，生命周期管理是服务端架构模式）
+- **Runtime**: Deno 2.6+ or Bun 1.3.5
+- **Server**: ✅ Supported (compatible with Deno and Bun; lifecycle is a server-side concept)
+- **Client**: ❌ Not supported (browser; lifecycle is a server-side pattern)
 
 ---
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 基础用法
+### Basic usage
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
 
-// 创建生命周期管理器
+// Create lifecycle manager
 const lifecycle = new LifecycleManager();
 
-// 注册初始化钩子
+// Register init hook
 lifecycle.on("initializing", async () => {
-  console.log("初始化中...");
-  // 加载配置、注册服务等
+  console.log("Initializing...");
+  // Load config, register services, etc.
 });
 
-// 注册启动钩子
+// Register start hook
 lifecycle.on("starting", async () => {
-  console.log("启动中...");
-  // 初始化数据库、缓存等
+  console.log("Starting...");
+  // Init database, cache, etc.
 });
 
-// 注册就绪钩子
+// Register ready hook
 lifecycle.on("ready", async () => {
-  console.log("应用已就绪");
+  console.log("Application ready");
 });
 
-// 执行生命周期
+// Run lifecycle
 await lifecycle.initialize();
 await lifecycle.start();
 
-// 查询状态
+// Query state
 console.log(lifecycle.getStage()); // "ready"
 console.log(lifecycle.isReady()); // true
 
-// 停止
+// Stop
 await lifecycle.stop();
 await lifecycle.shutdown();
 ```
 
-### 完整生命周期示例
+### Full lifecycle example
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
 
 const lifecycle = new LifecycleManager();
 
-// 注册所有生命周期钩子
+// Register all lifecycle hooks
 lifecycle.on("initializing", async () => {
-  console.log("1. 初始化中...");
-  // 加载配置
-  // 注册核心服务
+  console.log("1. Initializing...");
+  // Load config
+  // Register core services
 });
 
 lifecycle.on("initialized", async () => {
-  console.log("2. 初始化完成");
+  console.log("2. Initialized");
 });
 
 lifecycle.on("starting", async () => {
-  console.log("3. 启动中...");
-  // 初始化数据库连接
-  // 初始化缓存连接
-  // 加载插件
+  console.log("3. Starting...");
+  // Init database connection
+  // Init cache connection
+  // Load plugins
 });
 
 lifecycle.on("started", async () => {
-  console.log("4. 启动完成");
-  // 启动 HTTP 服务器
-  // 启动 WebSocket 服务器
+  console.log("4. Started");
+  // Start HTTP server
+  // Start WebSocket server
 });
 
 lifecycle.on("ready", async () => {
-  console.log("5. 应用已就绪");
+  console.log("5. Application ready");
 });
 
 lifecycle.on("stopping", async () => {
-  console.log("6. 停止中...");
-  // 停止接收新请求
-  // 等待正在处理的请求完成
+  console.log("6. Stopping...");
+  // Stop accepting new requests
+  // Wait for in-flight requests
 });
 
 lifecycle.on("stopped", async () => {
-  console.log("7. 停止完成");
+  console.log("7. Stopped");
 });
 
 lifecycle.on("shutting-down", async () => {
-  console.log("8. 关闭中...");
-  // 关闭服务器
-  // 关闭数据库连接
-  // 关闭缓存连接
+  console.log("8. Shutting down...");
+  // Close servers
+  // Close database connection
+  // Close cache connection
 });
 
 lifecycle.on("shutdown", async () => {
-  console.log("9. 应用已关闭");
+  console.log("9. Application shutdown");
 });
 
-// 执行完整的生命周期
+// Run full lifecycle
 await lifecycle.initialize(); // 1, 2
 await lifecycle.start(); // 3, 4, 5
 await lifecycle.stop(); // 6, 7
 await lifecycle.shutdown(); // 8, 9
 ```
 
-### 事件监听
+### Event listeners
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
 
 const lifecycle = new LifecycleManager();
 
-// 监听生命周期事件
+// Listen to lifecycle events
 lifecycle.addEventListener("lifecycle:initializing", (data) => {
-  console.log("初始化中事件:", data);
+  console.log("Initializing event:", data);
 });
 
 lifecycle.addEventListener("lifecycle:ready", (data) => {
-  console.log("就绪事件:", data);
+  console.log("Ready event:", data);
 });
 
-// 自定义事件
+// Custom events
 lifecycle.addEventListener("custom:event", (data) => {
-  console.log("自定义事件:", data);
+  console.log("Custom event:", data);
 });
 
-// 触发自定义事件
+// Emit custom event
 lifecycle.emit("custom:event", { message: "Hello" });
 
 await lifecycle.initialize();
 await lifecycle.start();
 ```
 
-### 错误处理
+### Error handling
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
@@ -198,64 +199,63 @@ import { LifecycleManager } from "@dreamer/lifecycle";
 const lifecycle = new LifecycleManager();
 
 lifecycle.on("initializing", async () => {
-  throw new Error("初始化失败");
+  throw new Error("Init failed");
 });
 
 try {
   await lifecycle.initialize();
 } catch (error) {
-  console.error("初始化失败:", error);
-  // 生命周期会自动回滚到 uninitialized 阶段
+  console.error("Init failed:", error);
+  // Lifecycle auto-rolls back to uninitialized
   console.log(lifecycle.getStage()); // "uninitialized"
 }
 ```
 
-### 超时控制
+### Timeout control
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
 
-// 配置超时时间（毫秒）
+// Configure timeout (ms)
 const lifecycle = new LifecycleManager({
-  timeout: 5000, // 5 秒超时
+  timeout: 5000, // 5 second timeout
 });
 
 lifecycle.on("initializing", async () => {
-  // 如果这个钩子执行超过 5 秒，会抛出超时错误
+  // If this hook runs > 5s, timeout error is thrown
   await new Promise((resolve) => setTimeout(resolve, 10000));
 });
 
 try {
   await lifecycle.initialize();
 } catch (error) {
-  console.error("超时错误:", error);
+  console.error("Timeout error:", error);
 }
 ```
 
 ---
 
-## 📚 API 文档
+## 📚 API Reference
 
-### LifecycleManager 类
+### LifecycleManager class
 
-生命周期管理器类，提供应用生命周期的管理功能。
+Lifecycle manager class for application lifecycle management.
 
-#### 构造函数
+#### Constructor
 
 ```typescript
 new LifecycleManager(options?: LifecycleManagerOptions)
 ```
 
-创建一个新的生命周期管理器实例。
+Creates a new lifecycle manager instance.
 
-**参数**：
+**Parameters**:
 
-- `options?: LifecycleManagerOptions` - 配置选项
-  - `autoEmitEvents?: boolean` - 是否在阶段转换时自动触发事件（默认：true）
-  - `timeout?: number` -
-    超时时间（毫秒），如果钩子执行超时则抛出错误（默认：0，无超时）
+- `options?: LifecycleManagerOptions` - Config options
+  - `autoEmitEvents?: boolean` - Auto-emit events on stage transitions (default: true)
+  - `timeout?: number` - Timeout in ms; throws if hook exceeds (default: 0, no timeout)
 
-**示例**：
+**Example**:
 
 ```typescript
 const lifecycle = new LifecycleManager({
@@ -264,78 +264,78 @@ const lifecycle = new LifecycleManager({
 });
 ```
 
-#### 方法
+#### Methods
 
 ##### `on(stage: LifecycleStage, hook: LifecycleHook): void`
 
-注册生命周期钩子。
+Register a lifecycle hook.
 
-**参数**：
+**Parameters**:
 
-- `stage: LifecycleStage` - 生命周期阶段
-- `hook: LifecycleHook` - 钩子函数（可以是同步或异步）
+- `stage: LifecycleStage` - Lifecycle stage
+- `hook: LifecycleHook` - Hook function (sync or async)
 
-**示例**：
+**Example**:
 
 ```typescript
 lifecycle.on("initializing", async () => {
-  console.log("初始化中...");
+  console.log("Initializing...");
 });
 ```
 
 ##### `off(stage: LifecycleStage, hook: LifecycleHook): void`
 
-移除生命周期钩子。
+Remove a lifecycle hook.
 
-**参数**：
+**Parameters**:
 
-- `stage: LifecycleStage` - 生命周期阶段
-- `hook: LifecycleHook` - 要移除的钩子函数
+- `stage: LifecycleStage` - Lifecycle stage
+- `hook: LifecycleHook` - Hook to remove
 
-**示例**：
+**Example**:
 
 ```typescript
-const hook = () => console.log("钩子");
+const hook = () => console.log("hook");
 lifecycle.on("initializing", hook);
 lifecycle.off("initializing", hook);
 ```
 
 ##### `addEventListener(event: string, listener: LifecycleEventListener): void`
 
-注册事件监听器。
+Register an event listener.
 
-**参数**：
+**Parameters**:
 
-- `event: string` - 事件名称
-- `listener: LifecycleEventListener` - 监听器函数
+- `event: string` - Event name
+- `listener: LifecycleEventListener` - Listener function
 
-**示例**：
+**Example**:
 
 ```typescript
 lifecycle.addEventListener("lifecycle:ready", (data) => {
-  console.log("应用已就绪:", data);
+  console.log("Application ready:", data);
 });
 ```
 
 ##### `removeEventListener(event: string, listener: LifecycleEventListener): void`
 
-移除事件监听器。
+Remove an event listener.
 
-**参数**：
+**Parameters**:
 
-- `event: string` - 事件名称
-- `listener: LifecycleEventListener` - 要移除的监听器函数
+- `event: string` - Event name
+- `listener: LifecycleEventListener` - Listener to remove
 
 ##### `emit(event: string, ...args: unknown[]): void`
 
-触发事件。
+Emit an event.
 
-**参数**：
+**Parameters**:
 
-- `event: string` - 事件名称
-- `...args: unknown[]` - 事件参数
+- `event: string` - Event name
+- `...args: unknown[]` - Event arguments
 
-**示例**：
+**Example**:
 
 ```typescript
 lifecycle.emit("custom:event", { message: "Hello" });
@@ -343,9 +343,9 @@ lifecycle.emit("custom:event", { message: "Hello" });
 
 ##### `initialize(): Promise<void>`
 
-初始化应用。将应用从 `uninitialized` 转换到 `initialized`。
+Initialize the application. Transitions from `uninitialized` to `initialized`.
 
-**示例**：
+**Example**:
 
 ```typescript
 await lifecycle.initialize();
@@ -353,9 +353,9 @@ await lifecycle.initialize();
 
 ##### `start(): Promise<void>`
 
-启动应用。将应用从 `initialized` 转换到 `ready`。
+Start the application. Transitions from `initialized` to `ready`.
 
-**示例**：
+**Example**:
 
 ```typescript
 await lifecycle.start();
@@ -363,9 +363,9 @@ await lifecycle.start();
 
 ##### `stop(): Promise<void>`
 
-停止应用。将应用从 `ready` 或 `started` 转换到 `stopped`。
+Stop the application. Transitions from `ready` or `started` to `stopped`.
 
-**示例**：
+**Example**:
 
 ```typescript
 await lifecycle.stop();
@@ -373,9 +373,9 @@ await lifecycle.stop();
 
 ##### `shutdown(): Promise<void>`
 
-关闭应用。将应用从 `stopped` 转换到 `shutdown`。
+Shut down the application. Transitions from `stopped` to `shutdown`.
 
-**示例**：
+**Example**:
 
 ```typescript
 await lifecycle.shutdown();
@@ -383,11 +383,11 @@ await lifecycle.shutdown();
 
 ##### `getStage(): LifecycleStage`
 
-获取当前生命周期阶段。
+Get the current lifecycle stage.
 
-**返回**：当前阶段
+**Returns**: Current stage
 
-**示例**：
+**Example**:
 
 ```typescript
 const stage = lifecycle.getStage(); // "ready"
@@ -395,77 +395,77 @@ const stage = lifecycle.getStage(); // "ready"
 
 ##### `isReady(): boolean`
 
-检查应用是否已就绪。
+Check if the application is ready.
 
-**返回**：是否已就绪
+**Returns**: Whether ready
 
-**示例**：
+**Example**:
 
 ```typescript
 if (lifecycle.isReady()) {
-  console.log("应用已就绪");
+  console.log("Application ready");
 }
 ```
 
 ##### `isShutdown(): boolean`
 
-检查应用是否已关闭。
+Check if the application is shut down.
 
-**返回**：是否已关闭
+**Returns**: Whether shut down
 
-**示例**：
+**Example**:
 
 ```typescript
 if (lifecycle.isShutdown()) {
-  console.log("应用已关闭");
+  console.log("Application shut down");
 }
 ```
 
 ##### `getStageDescription(): string`
 
-获取当前阶段的中文描述。
+Get a description of the current stage.
 
-**返回**：阶段的中文描述
+**Returns**: Stage description
 
-**示例**：
+**Example**:
 
 ```typescript
-const description = lifecycle.getStageDescription(); // "就绪"
+const description = lifecycle.getStageDescription(); // "Ready"
 ```
 
 ##### `reset(): void`
 
-重置生命周期管理器。将阶段重置为 `uninitialized`，清除所有钩子和事件监听器。
+Reset the lifecycle manager. Resets stage to `uninitialized` and clears all hooks and listeners.
 
-**示例**：
+**Example**:
 
 ```typescript
 lifecycle.reset();
 ```
 
-### 类型定义
+### Type definitions
 
 #### LifecycleStage
 
-生命周期阶段类型。
+Lifecycle stage type.
 
 ```typescript
 type LifecycleStage =
-  | "uninitialized" // 未初始化
-  | "initializing" // 初始化中
-  | "initialized" // 初始化完成
-  | "starting" // 启动中
-  | "started" // 启动完成
-  | "ready" // 就绪
-  | "stopping" // 停止中
-  | "stopped" // 停止完成
-  | "shutting-down" // 关闭中
-  | "shutdown"; // 关闭完成
+  | "uninitialized" // Not initialized
+  | "initializing" // Initializing
+  | "initialized" // Initialized
+  | "starting" // Starting
+  | "started" // Started
+  | "ready" // Ready
+  | "stopping" // Stopping
+  | "stopped" // Stopped
+  | "shutting-down" // Shutting down
+  | "shutdown"; // Shutdown
 ```
 
 #### LifecycleHook
 
-生命周期钩子函数类型。
+Lifecycle hook function type.
 
 ```typescript
 type LifecycleHook = () => void | Promise<void>;
@@ -473,51 +473,51 @@ type LifecycleHook = () => void | Promise<void>;
 
 #### LifecycleManagerOptions
 
-生命周期管理器配置选项。
+Lifecycle manager config options.
 
 ```typescript
 interface LifecycleManagerOptions {
-  autoEmitEvents?: boolean; // 是否自动触发事件（默认：true）
-  timeout?: number; // 超时时间（毫秒，默认：0，无超时）
+  autoEmitEvents?: boolean; // Auto-emit events (default: true)
+  timeout?: number; // Timeout in ms (default: 0, no timeout)
 }
 ```
 
-#### ServiceContainer 集成方法
+#### ServiceContainer integration methods
 
 ##### `getName(): string`
 
-获取管理器名称。
+Get manager name.
 
-**返回**：管理器名称
+**Returns**: Manager name
 
 ##### `setContainer(container: ServiceContainer): void`
 
-设置服务容器。
+Set service container.
 
-**参数**：
+**Parameters**:
 
-- `container: ServiceContainer` - 服务容器实例
+- `container: ServiceContainer` - Service container instance
 
 ##### `getContainer(): ServiceContainer | undefined`
 
-获取服务容器。
+Get service container.
 
-**返回**：服务容器实例，如果未设置则返回 undefined
+**Returns**: Service container instance, or undefined if not set
 
 ##### `static fromContainer(container: ServiceContainer, name?: string): LifecycleManager | undefined`
 
-从服务容器获取 LifecycleManager 实例。
+Get LifecycleManager from service container.
 
-**参数**：
+**Parameters**:
 
-- `container: ServiceContainer` - 服务容器实例
-- `name?: string` - 管理器名称（默认 "default"）
+- `container: ServiceContainer` - Service container instance
+- `name?: string` - Manager name (default "default")
 
-**返回**：LifecycleManager 实例，如果不存在则返回 undefined
+**Returns**: LifecycleManager instance, or undefined if not found
 
-### createLifecycleManager 工厂函数
+### createLifecycleManager factory
 
-用于服务容器注册的工厂函数。
+Factory for service container registration.
 
 ```typescript
 import {
@@ -528,33 +528,33 @@ import { ServiceContainer } from "jsr:@dreamer/service";
 
 const container = new ServiceContainer();
 
-// 注册 LifecycleManager
+// Register LifecycleManager
 container.registerSingleton(
   "lifecycle:app",
   () => createLifecycleManager({ name: "app" }),
 );
 
-// 获取实例
+// Get instance
 const lifecycle = container.get<LifecycleManager>("lifecycle:app");
 
-// 或者使用静态方法
+// Or use static method
 const sameLifecycle = LifecycleManager.fromContainer(container, "app");
 ```
 
-### 工具函数
+### Utility functions
 
 #### `isValidTransition(from: LifecycleStage, to: LifecycleStage): boolean`
 
-检查阶段转换是否有效。
+Check if a stage transition is valid.
 
-**参数**：
+**Parameters**:
 
-- `from: LifecycleStage` - 源阶段
-- `to: LifecycleStage` - 目标阶段
+- `from: LifecycleStage` - Source stage
+- `to: LifecycleStage` - Target stage
 
-**返回**：是否有效
+**Returns**: Whether valid
 
-**示例**：
+**Example**:
 
 ```typescript
 import { isValidTransition } from "@dreamer/lifecycle";
@@ -565,27 +565,27 @@ const invalid = isValidTransition("uninitialized", "ready"); // false
 
 #### `getStageDescription(stage: LifecycleStage): string`
 
-获取阶段的中文描述。
+Get description for a stage.
 
-**参数**：
+**Parameters**:
 
-- `stage: LifecycleStage` - 生命周期阶段
+- `stage: LifecycleStage` - Lifecycle stage
 
-**返回**：中文描述
+**Returns**: Stage description
 
-**示例**：
+**Example**:
 
 ```typescript
 import { getStageDescription } from "@dreamer/lifecycle";
 
-const desc = getStageDescription("ready"); // "就绪"
+const desc = getStageDescription("ready"); // "Ready"
 ```
 
 ---
 
-## 🔄 生命周期阶段
+## 🔄 Lifecycle stages
 
-### 阶段转换流程
+### Stage transition flow
 
 ```
 uninitialized
@@ -609,40 +609,40 @@ shutting-down
 shutdown
 ```
 
-### 阶段说明
+### Stage reference
 
-| 阶段            | 说明       | 可转换到的阶段                          |
-| --------------- | ---------- | --------------------------------------- |
-| `uninitialized` | 未初始化   | `initializing`                          |
-| `initializing`  | 初始化中   | `initialized`, `uninitialized`（回滚）  |
-| `initialized`   | 初始化完成 | `starting`, `uninitialized`（回滚）     |
-| `starting`      | 启动中     | `started`, `initialized`（回滚）        |
-| `started`       | 启动完成   | `ready`, `stopping`, `starting`（回滚） |
-| `ready`         | 就绪       | `stopping`, `started`（回滚）           |
-| `stopping`      | 停止中     | `stopped`, `ready`（回滚）              |
-| `stopped`       | 停止完成   | `shutting-down`, `starting`（重新启动） |
-| `shutting-down` | 关闭中     | `shutdown`, `stopped`（回滚）           |
-| `shutdown`      | 已关闭     | 无（最终状态）                          |
+| Stage | Description | Transitions to |
+|-------|-------------|----------------|
+| `uninitialized` | Not initialized | `initializing` |
+| `initializing` | Initializing | `initialized`, `uninitialized` (rollback) |
+| `initialized` | Initialized | `starting`, `uninitialized` (rollback) |
+| `starting` | Starting | `started`, `initialized` (rollback) |
+| `started` | Started | `ready`, `stopping`, `starting` (rollback) |
+| `ready` | Ready | `stopping`, `started` (rollback) |
+| `stopping` | Stopping | `stopped`, `ready` (rollback) |
+| `stopped` | Stopped | `shutting-down`, `starting` (restart) |
+| `shutting-down` | Shutting down | `shutdown`, `stopped` (rollback) |
+| `shutdown` | Shutdown | None (final state) |
 
-### 生命周期事件
+### Lifecycle events
 
-每个阶段转换都会自动触发对应的事件：
+Each stage transition auto-emits the corresponding event:
 
-- `lifecycle:initializing` - 初始化中
-- `lifecycle:initialized` - 初始化完成
-- `lifecycle:starting` - 启动中
-- `lifecycle:started` - 启动完成
-- `lifecycle:ready` - 就绪
-- `lifecycle:stopping` - 停止中
-- `lifecycle:stopped` - 停止完成
-- `lifecycle:shutting-down` - 关闭中
-- `lifecycle:shutdown` - 关闭完成
+- `lifecycle:initializing` - Initializing
+- `lifecycle:initialized` - Initialized
+- `lifecycle:starting` - Starting
+- `lifecycle:started` - Started
+- `lifecycle:ready` - Ready
+- `lifecycle:stopping` - Stopping
+- `lifecycle:stopped` - Stopped
+- `lifecycle:shutting-down` - Shutting down
+- `lifecycle:shutdown` - Shutdown
 
 ---
 
-## 💡 使用场景
+## 💡 Use cases
 
-### 1. 框架应用生命周期管理
+### 1. Framework application lifecycle
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
@@ -653,7 +653,6 @@ class Application {
   constructor() {
     this.lifecycle = new LifecycleManager();
 
-    // 注册生命周期钩子
     this.lifecycle.on("initializing", async () => {
       await this.loadConfig();
       await this.registerServices();
@@ -694,37 +693,33 @@ class Application {
 }
 ```
 
-### 2. 服务启动和关闭
+### 2. Service startup and shutdown
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
 
 const lifecycle = new LifecycleManager();
 
-// 启动服务
 lifecycle.on("starting", async () => {
   await startDatabase();
   await startRedis();
   await startHttpServer();
 });
 
-// 关闭服务
 lifecycle.on("shutting-down", async () => {
   await stopHttpServer();
   await stopRedis();
   await stopDatabase();
 });
 
-// 启动
 await lifecycle.initialize();
 await lifecycle.start();
 
-// 关闭
 await lifecycle.stop();
 await lifecycle.shutdown();
 ```
 
-### 3. 优雅关闭
+### 3. Graceful shutdown
 
 ```typescript
 import { LifecycleManager } from "@dreamer/lifecycle";
@@ -732,16 +727,15 @@ import { addSignalListener, exit } from "@dreamer/runtime-adapter";
 
 const lifecycle = new LifecycleManager();
 
-// 监听关闭信号（兼容 Deno 和 Bun）
 addSignalListener("SIGINT", async () => {
-  console.log("收到关闭信号，开始优雅关闭...");
+  console.log("Received SIGINT, graceful shutdown...");
   await lifecycle.stop();
   await lifecycle.shutdown();
   exit(0);
 });
 
 addSignalListener("SIGTERM", async () => {
-  console.log("收到终止信号，开始优雅关闭...");
+  console.log("Received SIGTERM, graceful shutdown...");
   await lifecycle.stop();
   await lifecycle.shutdown();
   exit(0);
@@ -750,45 +744,45 @@ addSignalListener("SIGTERM", async () => {
 
 ---
 
-## 📊 测试报告
+## 📊 Test Report
 
 [![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./TEST_REPORT.md)
 
-| 测试类别                        | 测试数 | 状态        |
-| ------------------------------- | ------ | ----------- |
-| LifecycleManager 核心功能       | 51     | ✅ 通过     |
-| EventEmitter 事件系统           | 20     | ✅ 通过     |
-| ServiceContainer 集成           | 6      | ✅ 通过     |
-| createLifecycleManager 工厂函数 | 5      | ✅ 通过     |
-| **总计**                        | **82** | ✅ **100%** |
+| Category | Tests | Status |
+|----------|-------|--------|
+| LifecycleManager core | 51 | ✅ Passed |
+| EventEmitter events | 20 | ✅ Passed |
+| ServiceContainer integration | 6 | ✅ Passed |
+| createLifecycleManager factory | 5 | ✅ Passed |
+| **Total** | **82** | ✅ **100%** |
 
-详细测试报告请查看 [TEST_REPORT.md](./TEST_REPORT.md)
-
----
-
-## 📝 注意事项
-
-1. **阶段转换顺序**：必须按照正确的顺序调用生命周期方法，否则会抛出错误。
-
-2. **错误处理**：钩子执行错误会自动回滚到上一个阶段，需要捕获错误并处理。
-
-3. **超时控制**：如果钩子执行时间较长，建议配置超时时间，避免无限等待。
-
-4. **事件系统**：生命周期事件是同步触发的，如果需要异步处理，请在监听器中自行处理。
-
-5. **重置功能**：`reset()` 方法会清除所有钩子和事件监听器，谨慎使用。
+See [TEST_REPORT.md](./TEST_REPORT.md) for details.
 
 ---
 
-## 🤝 贡献
+## 📝 Notes
 
-欢迎提交 Issue 和 Pull Request！
+1. **Stage order**: Lifecycle methods must be called in the correct order; otherwise an error is thrown.
+
+2. **Error handling**: Hook errors trigger automatic rollback to the previous stage; catch and handle errors as needed.
+
+3. **Timeout**: For long-running hooks, configure a timeout to avoid indefinite waits.
+
+4. **Events**: Lifecycle events are emitted synchronously; handle async logic inside listeners if needed.
+
+5. **Reset**: `reset()` clears all hooks and listeners; use with care.
 
 ---
 
-## 📄 许可证
+## 🤝 Contributing
 
-MIT License - 详见 [LICENSE.md](./LICENSE.md)
+Issues and Pull Requests are welcome.
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE.md](./LICENSE.md)
 
 ---
 

@@ -1,226 +1,226 @@
-# @dreamer/lifecycle 测试报告
+# @dreamer/lifecycle Test Report
 
-## 📊 测试概览
+## 📊 Test Overview
 
-| 项目             | 值                                |
-| ---------------- | --------------------------------- |
-| **测试库版本**   | `@dreamer/lifecycle@1.0.0-beta.2` |
-| **服务容器版本** | `@dreamer/service@1.0.0-beta.4`   |
-| **测试框架**     | `@dreamer/test@1.0.0-beta.39`     |
-| **测试时间**     | `2026-01-30`                      |
-| **测试环境**     | Deno 2.5+, Bun 1.0+               |
-| **测试文件数**   | 2                                 |
-| **测试用例总数** | 82                                |
-| **测试通过率**   | 100% ✅                           |
-| **测试执行时间** | ~3s                               |
+| Item | Value |
+|------|-------|
+| **Test Library Version** | `@dreamer/lifecycle@1.0.0-beta.2` |
+| **Service Container Version** | `@dreamer/service@1.0.0-beta.4` |
+| **Test Framework** | `@dreamer/test@1.0.0-beta.39` |
+| **Test Date** | `2026-01-30` |
+| **Test Environment** | Deno 2.5+, Bun 1.0+ |
+| **Test Files** | 2 |
+| **Total Test Cases** | 82 |
+| **Pass Rate** | 100% ✅ |
+| **Execution Time** | ~3s |
 
-## 📁 测试文件结构
+## 📁 Test File Structure
 
 ```
 lifecycle/
 ├── tests/
-│   ├── mod.test.ts          # LifecycleManager 核心功能测试 (62 个测试用例)
-│   └── event-emitter.test.ts # EventEmitter 事件系统测试 (20 个测试用例)
+│   ├── mod.test.ts          # LifecycleManager core tests (62 test cases)
+│   └── event-emitter.test.ts # EventEmitter event system tests (20 test cases)
 ```
 
-## ✅ 测试覆盖详情
+## ✅ Test Coverage Details
 
-### 1. LifecycleManager 核心功能测试 (51 个测试用例)
+### 1. LifecycleManager Core Tests (51 test cases)
 
-#### 1.1 基础功能 (8 个测试用例)
+#### 1.1 Basic Functionality (8 test cases)
 
-- ✅ 创建生命周期管理器实例
-- ✅ 使用自定义配置创建实例
-- ✅ 注册和执行钩子
-- ✅ 支持多个钩子
-- ✅ 支持异步钩子
-- ✅ 支持同步钩子
-- ✅ 移除钩子
-- ✅ 支持没有钩子的阶段转换
+- ✅ Create lifecycle manager instance
+- ✅ Create instance with custom config
+- ✅ Register and execute hooks
+- ✅ Support multiple hooks
+- ✅ Support async hooks
+- ✅ Support sync hooks
+- ✅ Remove hooks
+- ✅ Support stage transitions without hooks
 
-#### 1.2 生命周期阶段转换 (11 个测试用例)
+#### 1.2 Lifecycle Stage Transitions (11 test cases)
 
-- ✅ 正确执行完整的生命周期（9 个阶段）
-- ✅ 从 ready 阶段调用 stop
-- ✅ 从 started 阶段调用 stop
-- ✅ 支持阶段回滚
-- ✅ 拒绝在 uninitialized 阶段调用 start
-- ✅ 拒绝在 uninitialized 阶段调用 stop
-- ✅ 拒绝在 uninitialized 阶段调用 shutdown
-- ✅ 拒绝在 initialized 阶段调用 stop
-- ✅ 拒绝在 ready 阶段调用 initialize
-- ✅ 拒绝在 shutdown 阶段调用任何方法
-- ✅ 从 stopped 阶段重新启动（通过 reset）
+- ✅ Execute full lifecycle correctly (9 stages)
+- ✅ Call stop from ready stage
+- ✅ Call stop from started stage
+- ✅ Support stage rollback
+- ✅ Reject start in uninitialized stage
+- ✅ Reject stop in uninitialized stage
+- ✅ Reject shutdown in uninitialized stage
+- ✅ Reject stop in initialized stage
+- ✅ Reject initialize in ready stage
+- ✅ Reject any method in shutdown stage
+- ✅ Restart from stopped stage (via reset)
 
-#### 1.3 状态查询 (4 个测试用例)
+#### 1.3 State Queries (4 test cases)
 
-- ✅ 正确返回当前阶段
-- ✅ 返回阶段的中文描述
-- ✅ 在所有阶段正确返回 isReady
-- ✅ 在所有阶段正确返回 isShutdown
+- ✅ Return current stage correctly
+- ✅ Return stage description
+- ✅ Return isReady correctly in all stages
+- ✅ Return isShutdown correctly in all stages
 
-#### 1.4 事件系统 (7 个测试用例)
+#### 1.4 Event System (7 test cases)
 
-- ✅ 触发生命周期事件
-- ✅ 支持多个事件监听器
-- ✅ 传递事件参数
-- ✅ 支持自定义事件
-- ✅ 移除事件监听器
-- ✅ 处理事件监听器错误
-- ✅ 支持禁用自动事件
+- ✅ Emit lifecycle events
+- ✅ Support multiple event listeners
+- ✅ Pass event arguments
+- ✅ Support custom events
+- ✅ Remove event listeners
+- ✅ Handle listener errors
+- ✅ Support disabling auto events
 
-#### 1.5 错误处理 (4 个测试用例)
+#### 1.5 Error Handling (4 test cases)
 
-- ✅ 处理钩子执行错误
-- ✅ 处理异步钩子错误
-- ✅ 处理多个钩子中的错误
-- ✅ 处理非 Error 类型的错误
+- ✅ Handle hook execution errors
+- ✅ Handle async hook errors
+- ✅ Handle errors in multiple hooks
+- ✅ Handle non-Error type errors
 
-#### 1.6 超时控制 (3 个测试用例)
+#### 1.6 Timeout Control (3 test cases)
 
-- ✅ 支持钩子执行超时
-- ✅ 允许无超时限制
-- ✅ 在超时后回滚阶段
+- ✅ Support hook execution timeout
+- ✅ Allow no timeout limit
+- ✅ Rollback stage on timeout
 
-#### 1.7 重置功能 (2 个测试用例)
+#### 1.7 Reset Functionality (2 test cases)
 
-- ✅ 重置生命周期管理器
-- ✅ 清除所有钩子
+- ✅ Reset lifecycle manager
+- ✅ Clear all hooks
 
-#### 1.8 阶段转换验证 (5 个测试用例)
+#### 1.8 Stage Transition Validation (5 test cases)
 
-- ✅ 正确处理阶段转换
-- ✅ 从 stopped 阶段重新启动
-- ✅ 从 stopping 阶段回滚到 ready
-- ✅ 从 shutting-down 阶段回滚到 stopped
-- ✅ 触发所有生命周期阶段的事件（9 个阶段）
+- ✅ Handle stage transitions correctly
+- ✅ Restart from stopped stage
+- ✅ Rollback from stopping to ready
+- ✅ Rollback from shutting-down to stopped
+- ✅ Emit events for all lifecycle stages (9 stages)
 
-#### 1.9 钩子执行顺序 (2 个测试用例)
+#### 1.9 Hook Execution Order (2 test cases)
 
-- ✅ 按注册顺序执行钩子
-- ✅ 并行执行多个钩子
+- ✅ Execute hooks in registration order
+- ✅ Execute multiple hooks in parallel
 
-#### 1.10 重置功能完整性 (3 个测试用例)
+#### 1.10 Reset Completeness (3 test cases)
 
-- ✅ 清除所有事件监听器
-- ✅ 清除所有钩子
-- ✅ 重置后可以重新注册钩子和监听器
+- ✅ Clear all event listeners
+- ✅ Clear all hooks
+- ✅ Re-register hooks and listeners after reset
 
-### 2. EventEmitter 事件系统测试 (21 个测试用例)
+### 2. EventEmitter Event System Tests (21 test cases)
 
-#### 2.1 基础功能 (6 个测试用例)
+#### 2.1 Basic Functionality (6 test cases)
 
-- ✅ 创建 EventEmitter 实例
-- ✅ 注册事件监听器
-- ✅ 支持多个监听器
-- ✅ 移除事件监听器
-- ✅ 传递事件参数
-- ✅ 传递多个事件参数
+- ✅ Create EventEmitter instance
+- ✅ Register event listeners
+- ✅ Support multiple listeners
+- ✅ Remove event listeners
+- ✅ Pass event arguments
+- ✅ Pass multiple event arguments
 
-#### 2.2 错误处理 (2 个测试用例)
+#### 2.2 Error Handling (2 test cases)
 
-- ✅ 处理监听器错误
-- ✅ 处理多个监听器中的错误
+- ✅ Handle listener errors
+- ✅ Handle errors in multiple listeners
 
-#### 2.3 监听器管理 (5 个测试用例)
+#### 2.3 Listener Management (5 test cases)
 
-- ✅ 返回监听器数量
-- ✅ 返回所有事件名称
-- ✅ 移除指定事件的所有监听器
-- ✅ 移除所有事件的所有监听器
-- ✅ 在移除监听器后清理空事件
+- ✅ Return listener count
+- ✅ Return all event names
+- ✅ Remove all listeners for specified event
+- ✅ Remove all listeners for all events
+- ✅ Clean up empty events after removing listeners
 
-#### 2.4 边界情况 (8 个测试用例)
+#### 2.4 Edge Cases (8 test cases)
 
-- ✅ 处理没有监听器的事件
-- ✅ 处理移除不存在的监听器
-- ✅ 处理移除不存在的事件
-- ✅ 处理多次注册同一个监听器（Set 去重）
-- ✅ 处理多次移除同一个监听器
-- ✅ 处理空事件名称
-- ✅ 处理特殊字符事件名称
+- ✅ Handle events with no listeners
+- ✅ Handle removing non-existent listener
+- ✅ Handle removing non-existent event
+- ✅ Handle registering same listener multiple times (Set deduplication)
+- ✅ Handle removing same listener multiple times
+- ✅ Handle empty event names
+- ✅ Handle special character event names
 
-### 3. LifecycleManager ServiceContainer 集成 (6 个测试用例)
+### 3. LifecycleManager ServiceContainer Integration (6 test cases)
 
-- ✅ 应该获取默认管理器名称
-- ✅ 应该获取自定义管理器名称
-- ✅ 应该设置和获取服务容器
-- ✅ 应该从服务容器获取 LifecycleManager
-- ✅ 应该在服务不存在时返回 undefined
-- ✅ 应该支持多个 LifecycleManager 实例
+- ✅ Get default manager name
+- ✅ Get custom manager name
+- ✅ Set and get service container
+- ✅ Get LifecycleManager from service container
+- ✅ Return undefined when service does not exist
+- ✅ Support multiple LifecycleManager instances
 
-### 4. createLifecycleManager 工厂函数 (5 个测试用例)
+### 4. createLifecycleManager Factory (5 test cases)
 
-- ✅ 应该创建 LifecycleManager 实例
-- ✅ 应该使用默认名称
-- ✅ 应该使用自定义名称
-- ✅ 应该能够在服务容器中注册
-- ✅ 应该支持生命周期操作
+- ✅ Create LifecycleManager instance
+- ✅ Use default name
+- ✅ Use custom name
+- ✅ Register in service container
+- ✅ Support lifecycle operations
 
-### 5. 工具函数测试 (2 个测试用例)
+### 5. Utility Function Tests (2 test cases)
 
-#### 5.1 isValidTransition (2 个测试用例)
+#### 5.1 isValidTransition (2 test cases)
 
-- ✅ 验证所有有效的阶段转换（覆盖所有 10 个阶段的转换规则）
-- ✅ 拒绝无效的阶段转换
+- ✅ Validate all valid stage transitions (covers all 10 stage transition rules)
+- ✅ Reject invalid stage transitions
 
-#### 5.2 getStageDescription (1 个测试用例)
+#### 5.2 getStageDescription (1 test case)
 
-- ✅ 返回所有阶段的中文描述（10 个阶段）
+- ✅ Return descriptions for all stages (10 stages)
 
-## 🎯 功能覆盖分析
+## 🎯 Coverage Analysis
 
-### 核心功能覆盖
+### Core Function Coverage
 
-| 功能模块                  | 测试用例数 | 覆盖率 |
-| ------------------------- | ---------- | ------ |
-| LifecycleManager 基础功能 | 8          | 100%   |
-| 生命周期阶段转换          | 11         | 100%   |
-| 状态查询                  | 4          | 100%   |
-| 事件系统                  | 7          | 100%   |
-| 错误处理                  | 4          | 100%   |
-| 超时控制                  | 3          | 100%   |
-| 重置功能                  | 5          | 100%   |
-| 钩子执行                  | 2          | 100%   |
-| EventEmitter 基础功能     | 6          | 100%   |
-| EventEmitter 错误处理     | 2          | 100%   |
-| EventEmitter 监听器管理   | 5          | 100%   |
-| EventEmitter 边界情况     | 8          | 100%   |
-| 工具函数                  | 3          | 100%   |
+| Module | Test Cases | Coverage |
+|--------|------------|----------|
+| LifecycleManager basic | 8 | 100% |
+| Lifecycle stage transitions | 11 | 100% |
+| State queries | 4 | 100% |
+| Event system | 7 | 100% |
+| Error handling | 4 | 100% |
+| Timeout control | 3 | 100% |
+| Reset functionality | 5 | 100% |
+| Hook execution | 2 | 100% |
+| EventEmitter basic | 6 | 100% |
+| EventEmitter error handling | 2 | 100% |
+| EventEmitter listener management | 5 | 100% |
+| EventEmitter edge cases | 8 | 100% |
+| Utility functions | 3 | 100% |
 
-### 生命周期阶段覆盖
+### Lifecycle Stage Coverage
 
-所有 10 个生命周期阶段均已测试：
+All 10 lifecycle stages are tested:
 
-- ✅ uninitialized (未初始化)
-- ✅ initializing (初始化中)
-- ✅ initialized (初始化完成)
-- ✅ starting (启动中)
-- ✅ started (启动完成)
-- ✅ ready (就绪)
-- ✅ stopping (停止中)
-- ✅ stopped (停止完成)
-- ✅ shutting-down (关闭中)
-- ✅ shutdown (已关闭)
+- ✅ uninitialized
+- ✅ initializing
+- ✅ initialized
+- ✅ starting
+- ✅ started
+- ✅ ready
+- ✅ stopping
+- ✅ stopped
+- ✅ shutting-down
+- ✅ shutdown
 
-### 阶段转换规则覆盖
+### Stage Transition Rules Coverage
 
-所有有效的阶段转换均已测试：
+All valid stage transitions are tested:
 
 - ✅ uninitialized → initializing
-- ✅ initializing → initialized / uninitialized (回滚)
-- ✅ initialized → starting / uninitialized (回滚)
-- ✅ starting → started / initialized (回滚)
-- ✅ started → ready / stopping / starting (回滚)
-- ✅ ready → stopping / started (回滚)
-- ✅ stopping → stopped / ready (回滚)
-- ✅ stopped → shutting-down / starting (重新启动)
-- ✅ shutting-down → shutdown / stopped (回滚)
-- ✅ shutdown (最终状态，无法转换)
+- ✅ initializing → initialized / uninitialized (rollback)
+- ✅ initialized → starting / uninitialized (rollback)
+- ✅ starting → started / initialized (rollback)
+- ✅ started → ready / stopping / starting (rollback)
+- ✅ ready → stopping / started (rollback)
+- ✅ stopping → stopped / ready (rollback)
+- ✅ stopped → shutting-down / starting (restart)
+- ✅ shutting-down → shutdown / stopped (rollback)
+- ✅ shutdown (final state, no transitions)
 
-### API 方法覆盖
+### API Method Coverage
 
-所有公共 API 方法均已测试：
+All public API methods are tested:
 
 **LifecycleManager:**
 
@@ -244,7 +244,7 @@ lifecycle/
 - ✅ `getContainer()`
 - ✅ `static fromContainer(container, name?)`
 
-**工厂函数:**
+**Factory:**
 
 - ✅ `createLifecycleManager(options?)`
 
@@ -257,99 +257,99 @@ lifecycle/
 - ✅ `listenerCount(event)`
 - ✅ `eventNames()`
 
-**工具函数:**
+**Utilities:**
 
 - ✅ `isValidTransition(from, to)`
 - ✅ `getStageDescription(stage)`
-- ✅ `LIFECYCLE_STAGE_TRANSITIONS` (常量)
+- ✅ `LIFECYCLE_STAGE_TRANSITIONS` (constant)
 
-## 🔍 测试场景覆盖
+## 🔍 Test Scenario Coverage
 
-### 正常流程测试
+### Normal Flow Tests
 
-- ✅ 完整的生命周期流程（uninitialized → shutdown）
-- ✅ 阶段转换的连续性
-- ✅ 钩子执行顺序
-- ✅ 事件触发顺序
+- ✅ Full lifecycle flow (uninitialized → shutdown)
+- ✅ Stage transition continuity
+- ✅ Hook execution order
+- ✅ Event emission order
 
-### 错误处理测试
+### Error Handling Tests
 
-- ✅ 钩子执行错误自动回滚
-- ✅ 异步钩子错误处理
-- ✅ 多个钩子中的错误处理
-- ✅ 非 Error 类型的错误处理
-- ✅ 事件监听器错误隔离
+- ✅ Hook execution errors trigger automatic rollback
+- ✅ Async hook error handling
+- ✅ Error handling in multiple hooks
+- ✅ Non-Error type error handling
+- ✅ Event listener error isolation
 
-### 边界情况测试
+### Edge Case Tests
 
-- ✅ 无效的阶段转换
-- ✅ 在错误阶段调用方法
-- ✅ 空钩子列表
-- ✅ 空事件监听器列表
-- ✅ 重复注册监听器（Set 去重）
-- ✅ 移除不存在的监听器
-- ✅ 空事件名称
-- ✅ 特殊字符事件名称
+- ✅ Invalid stage transitions
+- ✅ Method calls in wrong stage
+- ✅ Empty hook list
+- ✅ Empty event listener list
+- ✅ Duplicate listener registration (Set deduplication)
+- ✅ Removing non-existent listener
+- ✅ Empty event names
+- ✅ Special character event names
 
-### 配置选项测试
+### Config Option Tests
 
-- ✅ 自定义配置（autoEmitEvents, timeout）
-- ✅ 禁用自动事件
-- ✅ 钩子执行超时
-- ✅ 无超时限制
+- ✅ Custom config (autoEmitEvents, timeout)
+- ✅ Disable auto events
+- ✅ Hook execution timeout
+- ✅ No timeout limit
 
-### 回滚机制测试
+### Rollback Mechanism Tests
 
-- ✅ 从 initializing 回滚到 uninitialized
-- ✅ 从 starting 回滚到 initialized
-- ✅ 从 stopping 回滚到 ready
-- ✅ 从 shutting-down 回滚到 stopped
+- ✅ Rollback from initializing to uninitialized
+- ✅ Rollback from starting to initialized
+- ✅ Rollback from stopping to ready
+- ✅ Rollback from shutting-down to stopped
 
-### 重置功能测试
+### Reset Functionality Tests
 
-- ✅ 重置阶段到 uninitialized
-- ✅ 清除所有钩子
-- ✅ 清除所有事件监听器
-- ✅ 重置后重新注册
+- ✅ Reset stage to uninitialized
+- ✅ Clear all hooks
+- ✅ Clear all event listeners
+- ✅ Re-register after reset
 
-## 📈 测试质量评估
+## 📈 Test Quality Assessment
 
-### 优点
+### Strengths
 
-1. **全面覆盖**: 所有公共 API 和功能点均已测试
-2. **边界测试**: 充分测试了边界情况和错误场景
-3. **实际场景**: 测试覆盖了实际使用场景
-4. **错误处理**: 完善的错误处理和回滚机制测试
-5. **并发测试**: 测试了钩子的并行执行
+1. **Comprehensive coverage**: All public APIs and features are tested
+2. **Edge case testing**: Thorough coverage of edge cases and error scenarios
+3. **Real-world scenarios**: Tests cover actual usage patterns
+4. **Error handling**: Complete error handling and rollback mechanism tests
+5. **Concurrency tests**: Parallel hook execution tested
 
-### 测试统计
+### Test Statistics
 
-- **总测试用例**: 82
-- **通过率**: 100%
-- **代码覆盖率**: 预计 > 95%
-- **功能覆盖率**: 100%
+- **Total test cases**: 82
+- **Pass rate**: 100%
+- **Code coverage**: Estimated > 95%
+- **Feature coverage**: 100%
 
-## 🎉 测试结论
+## 🎉 Conclusion
 
-**@dreamer/lifecycle 库的测试覆盖全面，所有功能均已通过测试。**
+**@dreamer/lifecycle has comprehensive test coverage; all features pass tests.**
 
-- ✅ 所有核心功能正常工作
-- ✅ 所有错误场景正确处理
-- ✅ 所有边界情况均已覆盖
-- ✅ 所有生命周期阶段和转换规则均已验证
-- ✅ 事件系统功能完整
-- ✅ 重置和清理功能正常
+- ✅ All core functionality works correctly
+- ✅ All error scenarios handled properly
+- ✅ All edge cases covered
+- ✅ All lifecycle stages and transition rules verified
+- ✅ Event system fully functional
+- ✅ Reset and cleanup work correctly
 
-**测试状态**: ✅ **全部通过**
+**Test status**: ✅ **All passed**
 
-**建议**: 可以安全地发布和使用该库。
+**Recommendation**: Safe to publish and use this library.
 
 ---
 
 <div align="center">
 
-**测试通过率：100%** ✅
+**Pass rate: 100%** ✅
 
-_共 82 个测试 | 全部通过_
+_82 tests | All passed_
 
 </div>
