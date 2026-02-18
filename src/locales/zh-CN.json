@@ -1,0 +1,23 @@
+{
+  "stage": {
+    "uninitialized": "未初始化",
+    "initializing": "初始化中",
+    "initialized": "初始化完成",
+    "starting": "启动中",
+    "started": "启动完成",
+    "ready": "就绪",
+    "stopping": "停止中",
+    "stopped": "停止完成",
+    "shutting-down": "关闭中",
+    "shutdown": "已关闭"
+  },
+  "errors": {
+    "invalidTransition": "无效的阶段转换: {from} -> {to}",
+    "hookTimeout": "钩子执行超时 ({stage})",
+    "hookFailed": "生命周期钩子执行失败 ({stage}): {message}",
+    "initializeWrongStage": "只能在 uninitialized 阶段调用 initialize，当前阶段: {current}",
+    "startWrongStage": "只能在 initialized 阶段调用 start，当前阶段: {current}",
+    "stopWrongStage": "只能在 ready 或 started 阶段调用 stop，当前阶段: {current}",
+    "shutdownWrongStage": "只能在 stopped 阶段调用 shutdown，当前阶段: {current}"
+  }
+}

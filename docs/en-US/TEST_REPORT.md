@@ -1,18 +1,20 @@
 # @dreamer/lifecycle Test Report
 
+[English](./TEST_REPORT.md) | [中文 (Chinese)](../zh-CN/TEST_REPORT.md)
+
 ## 📊 Test Overview
 
-| Item | Value |
-|------|-------|
-| **Test Library Version** | `@dreamer/lifecycle@1.0.0-beta.2` |
-| **Service Container Version** | `@dreamer/service@1.0.0-beta.4` |
-| **Test Framework** | `@dreamer/test@1.0.0-beta.39` |
-| **Test Date** | `2026-01-30` |
-| **Test Environment** | Deno 2.5+, Bun 1.0+ |
-| **Test Files** | 2 |
-| **Total Test Cases** | 82 |
-| **Pass Rate** | 100% ✅ |
-| **Execution Time** | ~3s |
+| Item                          | Value                             |
+| ----------------------------- | --------------------------------- |
+| **Test Library Version**      | `@dreamer/lifecycle@1.0.0-beta.2` |
+| **Service Container Version** | `@dreamer/service@1.0.0-beta.4`   |
+| **Test Framework**            | `@dreamer/test@1.0.0-beta.39`     |
+| **Test Date**                 | `2026-01-30`                      |
+| **Test Environment**          | Deno 2.5+, Bun 1.0+               |
+| **Test Files**                | 2                                 |
+| **Total Test Cases**          | 82                                |
+| **Pass Rate**                 | 100% ✅                           |
+| **Execution Time**            | ~3s                               |
 
 ## 📁 Test File Structure
 
@@ -172,21 +174,21 @@ lifecycle/
 
 ### Core Function Coverage
 
-| Module | Test Cases | Coverage |
-|--------|------------|----------|
-| LifecycleManager basic | 8 | 100% |
-| Lifecycle stage transitions | 11 | 100% |
-| State queries | 4 | 100% |
-| Event system | 7 | 100% |
-| Error handling | 4 | 100% |
-| Timeout control | 3 | 100% |
-| Reset functionality | 5 | 100% |
-| Hook execution | 2 | 100% |
-| EventEmitter basic | 6 | 100% |
-| EventEmitter error handling | 2 | 100% |
-| EventEmitter listener management | 5 | 100% |
-| EventEmitter edge cases | 8 | 100% |
-| Utility functions | 3 | 100% |
+| Module                           | Test Cases | Coverage |
+| -------------------------------- | ---------- | -------- |
+| LifecycleManager basic           | 8          | 100%     |
+| Lifecycle stage transitions      | 11         | 100%     |
+| State queries                    | 4          | 100%     |
+| Event system                     | 7          | 100%     |
+| Error handling                   | 4          | 100%     |
+| Timeout control                  | 3          | 100%     |
+| Reset functionality              | 5          | 100%     |
+| Hook execution                   | 2          | 100%     |
+| EventEmitter basic               | 6          | 100%     |
+| EventEmitter error handling      | 2          | 100%     |
+| EventEmitter listener management | 5          | 100%     |
+| EventEmitter edge cases          | 8          | 100%     |
+| Utility functions                | 3          | 100%     |
 
 ### Lifecycle Stage Coverage
 

@@ -1,18 +1,18 @@
 # @dreamer/lifecycle
 
-> 一个兼容 Deno 和 Bun 的应用生命周期管理库，提供完整的应用生命周期管理功能
+> 一个兼容 Deno 和 Bun 的应用生命周期管理包，提供完整的应用生命周期管理功能
 
-[English](./README.md) | 中文 (Chinese)
+> [English](../../README.md) | 中文 (Chinese)
 
 [![JSR](https://jsr.io/badges/@dreamer/lifecycle)](https://jsr.io/@dreamer/lifecycle)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](../../LICENSE)
 [![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./TEST_REPORT.md)
 
 ---
 
 ## 🎯 功能
 
-应用生命周期管理库，用于管理应用的完整生命周期，包括初始化、启动、运行、停止和关闭等阶段。
+应用生命周期管理包，用于管理应用的完整生命周期，包括初始化、启动、运行、停止和关闭等阶段。
 
 ## ✨ 特性
 
@@ -752,6 +752,16 @@ addSignalListener("SIGTERM", async () => {
 
 ---
 
+## 📝 变更日志
+
+### [1.0.1] - 2026-02-19
+
+- **变更**：i18n 翻译方法 `$t` → `$tr`；文档调整至 `docs/en-US/` 与
+  `docs/zh-CN/`；许可证明确为 Apache-2.0。
+- 完整历史：[CHANGELOG](../en-US/CHANGELOG.md) | [中文](../zh-CN/CHANGELOG.md)
+
+---
+
 ## 📊 测试报告
 
 [![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./TEST_REPORT.md)
@@ -790,7 +800,7 @@ addSignalListener("SIGTERM", async () => {
 
 ## 📄 许可证
 
-MIT License - 详见 [LICENSE.md](./LICENSE.md)
+Apache License 2.0 - 详见 [LICENSE](./LICENSE)
 
 ---
 

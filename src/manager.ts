@@ -5,12 +5,13 @@
  */
 
 import { EventEmitter } from "./event-emitter.ts";
+import { $tr, getStageDescription } from "./i18n.ts";
 import type {
   LifecycleEventListener,
   LifecycleHook,
   LifecycleStage,
 } from "./types.ts";
-import { getStageDescription, isValidTransition } from "./types.ts";
+import { isValidTransition } from "./types.ts";
 import type { ServiceContainer } from "@dreamer/service";
 
 /**
@@ -169,9 +170,10 @@ export class LifecycleManager {
     // 检查阶段转换是否有效
     if (!isValidTransition(this.stage, targetStage)) {
       throw new Error(
-        `无效的阶段转换: ${getStageDescription(this.stage)} -> ${
-          getStageDescription(targetStage)
-        }`,
+        $tr("errors.invalidTransition", {
+          from: getStageDescription(this.stage),
+          to: getStageDescription(targetStage),
+        }),
       );
     }
 
@@ -197,7 +199,12 @@ export class LifecycleManager {
             let timeoutId: ReturnType<typeof setTimeout>;
             const timeoutPromise = new Promise<never>((_, reject) => {
               timeoutId = setTimeout(
-                () => reject(new Error(`钩子执行超时 (${targetStage})`)),
+                () =>
+                  reject(
+                    new Error(
+                      $tr("errors.hookTimeout", { stage: targetStage }),
+                    ),
+                  ),
                 this.options.timeout,
               );
             });
@@ -212,9 +219,10 @@ export class LifecycleManager {
           // 钩子执行错误，回滚到上一个阶段
           this.stage = previousStage;
           throw new Error(
-            `生命周期钩子执行失败 (${targetStage}): ${
-              error instanceof Error ? error.message : String(error)
-            }`,
+            $tr("errors.hookFailed", {
+              stage: targetStage,
+              message: error instanceof Error ? error.message : String(error),
+            }),
           );
         }
       });
@@ -232,9 +240,9 @@ export class LifecycleManager {
   async initialize(): Promise<void> {
     if (this.stage !== "uninitialized") {
       throw new Error(
-        `只能在 uninitialized 阶段调用 initialize，当前阶段: ${
-          getStageDescription(this.stage)
-        }`,
+        $tr("errors.initializeWrongStage", {
+          current: getStageDescription(this.stage),
+        }),
       );
     }
 
@@ -250,9 +258,9 @@ export class LifecycleManager {
   async start(): Promise<void> {
     if (this.stage !== "initialized") {
       throw new Error(
-        `只能在 initialized 阶段调用 start，当前阶段: ${
-          getStageDescription(this.stage)
-        }`,
+        $tr("errors.startWrongStage", {
+          current: getStageDescription(this.stage),
+        }),
       );
     }
 
@@ -269,9 +277,9 @@ export class LifecycleManager {
   async stop(): Promise<void> {
     if (this.stage !== "ready" && this.stage !== "started") {
       throw new Error(
-        `只能在 ready 或 started 阶段调用 stop，当前阶段: ${
-          getStageDescription(this.stage)
-        }`,
+        $tr("errors.stopWrongStage", {
+          current: getStageDescription(this.stage),
+        }),
       );
     }
 
@@ -287,9 +295,9 @@ export class LifecycleManager {
   async shutdown(): Promise<void> {
     if (this.stage !== "stopped") {
       throw new Error(
-        `只能在 stopped 阶段调用 shutdown，当前阶段: ${
-          getStageDescription(this.stage)
-        }`,
+        $tr("errors.shutdownWrongStage", {
+          current: getStageDescription(this.stage),
+        }),
       );
     }
 

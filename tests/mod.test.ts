@@ -1,5 +1,7 @@
 /**
  * 生命周期管理器测试
+ *
+ * 测试前初始化 i18n 并设置为 zh-CN，以便错误信息与阶段描述为中文。
  */
 
 import { ServiceContainer } from "@dreamer/service";
@@ -11,6 +13,11 @@ import {
   LifecycleManager,
   type LifecycleStage,
 } from "../src/mod.ts";
+import { initLifecycleI18n, setLifecycleLocale } from "../src/i18n.ts";
+
+// 初始化 i18n 为 zh-CN，使 $tr 返回中文文案（测试期望为中文）
+initLifecycleI18n();
+setLifecycleLocale("zh-CN");
 
 describe("LifecycleManager", () => {
   describe("基础功能", () => {

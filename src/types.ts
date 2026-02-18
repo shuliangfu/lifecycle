@@ -64,23 +64,8 @@ export function isValidTransition(
 }
 
 /**
- * 获取阶段的中文描述
- *
+ * 获取阶段的本地化描述（由 i18n 提供，需先 initLifecycleI18n 以生效）
  * @param stage 生命周期阶段
- * @returns 中文描述
+ * @returns 本地化描述
  */
-export function getStageDescription(stage: LifecycleStage): string {
-  const descriptions: Record<LifecycleStage, string> = {
-    uninitialized: "未初始化",
-    initializing: "初始化中",
-    initialized: "初始化完成",
-    starting: "启动中",
-    started: "启动完成",
-    ready: "就绪",
-    stopping: "停止中",
-    stopped: "停止完成",
-    "shutting-down": "关闭中",
-    shutdown: "已关闭",
-  };
-  return descriptions[stage];
-}
+export { getStageDescription } from "./i18n.ts";

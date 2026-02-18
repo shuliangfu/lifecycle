@@ -1,0 +1,23 @@
+{
+  "stage": {
+    "uninitialized": "Uninitialized",
+    "initializing": "Initializing",
+    "initialized": "Initialized",
+    "starting": "Starting",
+    "started": "Started",
+    "ready": "Ready",
+    "stopping": "Stopping",
+    "stopped": "Stopped",
+    "shutting-down": "Shutting down",
+    "shutdown": "Shutdown"
+  },
+  "errors": {
+    "invalidTransition": "Invalid stage transition: {from} -> {to}",
+    "hookTimeout": "Hook execution timed out ({stage})",
+    "hookFailed": "Lifecycle hook failed ({stage}): {message}",
+    "initializeWrongStage": "initialize() can only be called in uninitialized stage, current: {current}",
+    "startWrongStage": "start() can only be called in initialized stage, current: {current}",
+    "stopWrongStage": "stop() can only be called in ready or started stage, current: {current}",
+    "shutdownWrongStage": "shutdown() can only be called in stopped stage, current: {current}"
+  }
+}

@@ -55,6 +55,3 @@ export {
 
 // 导出事件发射器（如果需要直接使用）
 export { EventEmitter } from "./event-emitter.ts";
-
-// 注意：transitionTo 是私有方法，不对外导出
-// 如果需要测试阶段转换，可以通过公共方法（initialize、start、stop、shutdown）间接测试
