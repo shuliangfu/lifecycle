@@ -49,10 +49,8 @@ export function detectLocale(): Locale {
   return DEFAULT_LOCALE;
 }
 
-/**
- * Create lifecycle i18n instance. Call once at entry if needed; not required for $tr (falls back to key).
- */
-export function initLifecycleI18n(): void {
+/** 内部初始化，导入 i18n 时自动执行，不导出 */
+function initLifecycleI18n(): void {
   if (lifecycleI18n) return;
   const i18n = createI18n({
     defaultLocale: DEFAULT_LOCALE,
@@ -63,6 +61,8 @@ export function initLifecycleI18n(): void {
   i18n.setLocale(detectLocale());
   lifecycleI18n = i18n;
 }
+
+initLifecycleI18n();
 
 /**
  * Set locale for lifecycle messages. Initializes i18n if not yet called.
@@ -80,6 +80,7 @@ export function $tr(
   params?: Record<string, string | number>,
   lang?: Locale,
 ): string {
+  if (!lifecycleI18n) initLifecycleI18n();
   if (!lifecycleI18n) return key;
   if (lang !== undefined) {
     const prev = lifecycleI18n.getLocale();

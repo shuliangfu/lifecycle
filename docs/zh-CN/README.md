@@ -754,11 +754,11 @@ addSignalListener("SIGTERM", async () => {
 
 ## 📝 变更日志
 
-### [1.0.1] - 2026-02-19
+### [1.0.2] - 2026-02-19
 
-- **变更**：i18n 翻译方法 `$t` → `$tr`；文档调整至 `docs/en-US/` 与
-  `docs/zh-CN/`；许可证明确为 Apache-2.0。
-- 完整历史：[CHANGELOG](../en-US/CHANGELOG.md) | [中文](../zh-CN/CHANGELOG.md)
+- **变更**：i18n 在模块加载时自动初始化，入口不再调用
+  init。完整历史：[CHANGELOG](../en-US/CHANGELOG.md) |
+  [中文](../zh-CN/CHANGELOG.md)
 
 ---
 

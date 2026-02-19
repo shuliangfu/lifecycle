@@ -13,10 +13,9 @@ import {
   LifecycleManager,
   type LifecycleStage,
 } from "../src/mod.ts";
-import { initLifecycleI18n, setLifecycleLocale } from "../src/i18n.ts";
+import { setLifecycleLocale } from "../src/i18n.ts";
 
-// 初始化 i18n 为 zh-CN，使 $tr 返回中文文案（测试期望为中文）
-initLifecycleI18n();
+// 设置 i18n 为 zh-CN，使 $tr 返回中文文案（测试期望为中文）
 setLifecycleLocale("zh-CN");
 
 describe("LifecycleManager", () => {

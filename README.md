@@ -14,11 +14,11 @@
 
 ## 📝 Changelog
 
-### [1.0.1] - 2026-02-19
+### [1.0.2] - 2026-02-19
 
-- **Changed**: i18n translation method `$t` → `$tr`; docs reorganized to
-  `docs/en-US/` and `docs/zh-CN/`; license explicitly Apache-2.0.
-- Full history: [Changelog](./docs/en-US/CHANGELOG.md) | [中文](./docs/zh-CN/CHANGELOG.md)
+- **Changed**: i18n init runs automatically in module; entry no longer calls
+  init. [Changelog](./docs/en-US/CHANGELOG.md) |
+  [中文](./docs/zh-CN/CHANGELOG.md)
 
 ---
 
@@ -70,8 +70,10 @@ deno add jsr:@dreamer/lifecycle
 ## 🌍 Environment compatibility
 
 - **Runtime**: Deno 2.6+ or Bun 1.3.5
-- **Server**: ✅ Supported (compatible with Deno and Bun; lifecycle is a server-side concept)
-- **Client**: ❌ Not supported (browser environment; lifecycle is a server-side pattern)
+- **Server**: ✅ Supported (compatible with Deno and Bun; lifecycle is a
+  server-side concept)
+- **Client**: ❌ Not supported (browser environment; lifecycle is a server-side
+  pattern)
 
 ---
 
@@ -267,8 +269,10 @@ Creates a new lifecycle manager instance.
 **Parameters**:
 
 - `options?: LifecycleManagerOptions` — Configuration
-  - `autoEmitEvents?: boolean` — Whether to emit events on stage transition (default: true)
-  - `timeout?: number` — Timeout in ms; hook execution exceeding this throws (default: 0, no timeout)
+  - `autoEmitEvents?: boolean` — Whether to emit events on stage transition
+    (default: true)
+  - `timeout?: number` — Timeout in ms; hook execution exceeding this throws
+    (default: 0, no timeout)
 
 **Example**:
 
@@ -450,7 +454,8 @@ const description = lifecycle.getStageDescription(); // e.g. "Ready"
 
 ##### `reset(): void`
 
-Reset the lifecycle manager. Resets stage to `uninitialized` and clears all hooks and event listeners.
+Reset the lifecycle manager. Resets stage to `uninitialized` and clears all
+hooks and event listeners.
 
 **Example**:
 
@@ -466,16 +471,16 @@ Lifecycle stage type.
 
 ```typescript
 type LifecycleStage =
-  | "uninitialized"   // Not initialized
-  | "initializing"    // Initializing
-  | "initialized"     // Initialized
-  | "starting"       // Starting
-  | "started"        // Started
-  | "ready"          // Ready
-  | "stopping"       // Stopping
-  | "stopped"        // Stopped
-  | "shutting-down"  // Shutting down
-  | "shutdown";      // Shut down
+  | "uninitialized" // Not initialized
+  | "initializing" // Initializing
+  | "initialized" // Initialized
+  | "starting" // Starting
+  | "started" // Started
+  | "ready" // Ready
+  | "stopping" // Stopping
+  | "stopped" // Stopped
+  | "shutting-down" // Shutting down
+  | "shutdown"; // Shut down
 ```
 
 #### LifecycleHook
@@ -493,7 +498,7 @@ Lifecycle manager configuration.
 ```typescript
 interface LifecycleManagerOptions {
   autoEmitEvents?: boolean; // Emit events automatically (default: true)
-  timeout?: number;         // Timeout in ms (default: 0, no timeout)
+  timeout?: number; // Timeout in ms (default: 0, no timeout)
 }
 ```
 
@@ -626,18 +631,18 @@ shutdown
 
 ### Stage reference
 
-| Stage            | Description   | Allowed transitions                          |
-| ---------------- | ------------- | -------------------------------------------- |
-| `uninitialized` | Not initialized | `initializing`                              |
-| `initializing`   | Initializing  | `initialized`, `uninitialized` (rollback)   |
-| `initialized`    | Initialized   | `starting`, `uninitialized` (rollback)      |
-| `starting`      | Starting      | `started`, `initialized` (rollback)         |
-| `started`       | Started       | `ready`, `stopping`, `starting` (rollback)  |
-| `ready`         | Ready         | `stopping`, `started` (rollback)            |
-| `stopping`      | Stopping      | `stopped`, `ready` (rollback)                |
-| `stopped`       | Stopped       | `shutting-down`, `starting` (restart)       |
-| `shutting-down` | Shutting down | `shutdown`, `stopped` (rollback)            |
-| `shutdown`      | Shut down     | None (final state)                          |
+| Stage           | Description     | Allowed transitions                        |
+| --------------- | --------------- | ------------------------------------------ |
+| `uninitialized` | Not initialized | `initializing`                             |
+| `initializing`  | Initializing    | `initialized`, `uninitialized` (rollback)  |
+| `initialized`   | Initialized     | `starting`, `uninitialized` (rollback)     |
+| `starting`      | Starting        | `started`, `initialized` (rollback)        |
+| `started`       | Started         | `ready`, `stopping`, `starting` (rollback) |
+| `ready`         | Ready           | `stopping`, `started` (rollback)           |
+| `stopping`      | Stopping        | `stopped`, `ready` (rollback)              |
+| `stopped`       | Stopped         | `shutting-down`, `starting` (restart)      |
+| `shutting-down` | Shutting down   | `shutdown`, `stopped` (rollback)           |
+| `shutdown`      | Shut down       | None (final state)                         |
 
 ### Lifecycle events
 
@@ -769,13 +774,13 @@ addSignalListener("SIGTERM", async () => {
 
 [![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./docs/en-US/TEST_REPORT.md)
 
-| Category                      | Count | Status     |
-| ----------------------------- | ----- | ---------- |
-| LifecycleManager core         | 51    | ✅ Pass    |
-| EventEmitter events           | 20    | ✅ Pass    |
-| ServiceContainer integration  | 6     | ✅ Pass    |
-| createLifecycleManager factory| 5     | ✅ Pass    |
-| **Total**                     | **82**| ✅ **100%**|
+| Category                       | Count  | Status      |
+| ------------------------------ | ------ | ----------- |
+| LifecycleManager core          | 51     | ✅ Pass     |
+| EventEmitter events            | 20     | ✅ Pass     |
+| ServiceContainer integration   | 6      | ✅ Pass     |
+| createLifecycleManager factory | 5      | ✅ Pass     |
+| **Total**                      | **82** | ✅ **100%** |
 
 Full test report: [TEST_REPORT.md](./docs/en-US/TEST_REPORT.md).
 
@@ -783,13 +788,17 @@ Full test report: [TEST_REPORT.md](./docs/en-US/TEST_REPORT.md).
 
 ## 📝 Notes
 
-1. **Stage order**: Lifecycle methods must be called in the correct order; otherwise an error is thrown.
+1. **Stage order**: Lifecycle methods must be called in the correct order;
+   otherwise an error is thrown.
 
-2. **Error handling**: Hook errors trigger automatic rollback to the previous stage; catch and handle errors as needed.
+2. **Error handling**: Hook errors trigger automatic rollback to the previous
+   stage; catch and handle errors as needed.
 
-3. **Timeout**: If hooks may run long, set a timeout to avoid waiting indefinitely.
+3. **Timeout**: If hooks may run long, set a timeout to avoid waiting
+   indefinitely.
 
-4. **Events**: Lifecycle events are emitted synchronously; for async handling, implement it inside the listener.
+4. **Events**: Lifecycle events are emitted synchronously; for async handling,
+   implement it inside the listener.
 
 5. **Reset**: `reset()` clears all hooks and event listeners; use with care.
 

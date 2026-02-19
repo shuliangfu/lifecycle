@@ -64,7 +64,7 @@ export function isValidTransition(
 }
 
 /**
- * 获取阶段的本地化描述（由 i18n 提供，需先 initLifecycleI18n 以生效）
+ * 获取阶段的本地化描述（由 i18n 提供，模块加载时自动初始化）
  * @param stage 生命周期阶段
  * @returns 本地化描述
  */
