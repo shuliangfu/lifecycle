@@ -4,17 +4,29 @@
 
 ## 📊 Test Overview
 
-| Item                          | Value                             |
-| ----------------------------- | --------------------------------- |
-| **Test Library Version**      | `@dreamer/lifecycle@1.0.0-beta.2` |
-| **Service Container Version** | `@dreamer/service@1.0.0-beta.4`   |
-| **Test Framework**            | `@dreamer/test@1.0.0-beta.39`     |
-| **Test Date**                 | `2026-01-30`                      |
-| **Test Environment**          | Deno 2.5+, Bun 1.0+               |
-| **Test Files**                | 2                                 |
-| **Total Test Cases**          | 82                                |
-| **Pass Rate**                 | 100% ✅                           |
-| **Execution Time**            | ~3s                               |
+| Item                | Value                                                                  |
+| ------------------- | --------------------------------------------------------------------- |
+| **Package version** | `@dreamer/lifecycle@1.1.0`                                            |
+| **Command**         | Deno: `deno test -A tests/` · Bun: `bun test tests/` · Node: `npm run test:node` |
+| **Environment**     | Deno 2.9+ / Bun 1.3+ / Node.js 22+                                    |
+| **Test framework**  | `@dreamer/test@^1.2.3`                                                |
+
+---
+
+## 🎯 Test results
+
+### Overall statistics
+
+| Metric          | Value                                |
+| --------------- | ------------------------------------ |
+| **Total tests** | 84 (Deno) / 82 (Bun) / 82 (Node)     |
+| **Passed**      | 84 / 82 / 82                         |
+| **Failed**      | 0 / 0 / 0                            |
+| **Pass rate**   | 100%                                 |
+
+> The Deno test runner counts 2 framework teardown steps in the total, so Deno
+> reports 84 while Bun/Node report 82; the business `it()` cases are identical
+> across runtimes, all with 0 failures.
 
 ## 📁 Test File Structure
 
@@ -333,7 +345,12 @@ All public API methods are tested:
 
 ## 🎉 Conclusion
 
-**@dreamer/lifecycle has comprehensive test coverage; all features pass tests.**
+All three runtimes (Deno/Bun/Node) pass for `@dreamer/lifecycle`: **84 / 82 / 82,
+0 failures** (Deno reports 2 more than Bun/Node due to framework teardown
+steps; the business `it()` cases are identical at 82). `src/` is pure logic
+(no `Deno.*`); timer types already use `ReturnType<typeof setTimeout>` for
+cross-runtime unification, and error messages are localized via
+`@dreamer/i18n` (tests lock zh-CN at module level).
 
 - ✅ All core functionality works correctly
 - ✅ All error scenarios handled properly
@@ -342,7 +359,7 @@ All public API methods are tested:
 - ✅ Event system fully functional
 - ✅ Reset and cleanup work correctly
 
-**Test status**: ✅ **All passed**
+**Test status**: ✅ **All passed across three runtimes**
 
 **Recommendation**: Safe to publish and use this library.
 
@@ -352,6 +369,6 @@ All public API methods are tested:
 
 **Pass rate: 100%** ✅
 
-_82 tests | All passed_
+_84 / 82 / 82 tests (Deno/Bun/Node) | All passed_
 
 </div>
