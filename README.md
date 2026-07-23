@@ -1,23 +1,23 @@
 # @dreamer/lifecycle
 
-> An application lifecycle management library compatible with Deno and Bun,
-> providing full lifecycle management (initialization, start, run, stop, and
-> shutdown).
+> An application lifecycle management library compatible with Deno, Bun and
+> Node.js, providing full lifecycle management (initialization, start, run,
+> stop, and shutdown).
 
 > [English](./README.md) (root) | [中文 (Chinese)](./docs/zh-CN/README.md)
 
 [![JSR](https://jsr.io/badges/@dreamer/lifecycle)](https://jsr.io/@dreamer/lifecycle)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
-[![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./docs/en-US/TEST_REPORT.md)
+[![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed%20(3%20runtimes)-brightgreen)](./docs/en-US/TEST_REPORT.md)
 
 ---
 
 ## 📝 Changelog
 
-### [1.0.2] - 2026-02-19
+### [1.1.0] - 2026-07-23
 
-- **Changed**: i18n init runs automatically in module; entry no longer calls
-  init. [Changelog](./docs/en-US/CHANGELOG.md) |
+- **Added**: Node.js 22+ compatibility; three-runtime CI (Deno/Bun/Node).
+  [Changelog](./docs/en-US/CHANGELOG.md) |
   [中文](./docs/zh-CN/CHANGELOG.md)
 
 ---
@@ -63,15 +63,33 @@ shutdown.
 
 ## 📦 Installation
 
+### Deno
+
 ```bash
 deno add jsr:@dreamer/lifecycle
 ```
 
+### Bun
+
+```bash
+bunx jsr add @dreamer/lifecycle
+```
+
+### Node.js
+
+```bash
+npx jsr add @dreamer/lifecycle
+```
+
 ## 🌍 Environment compatibility
 
-- **Runtime**: Deno 2.6+ or Bun 1.3.5
-- **Server**: ✅ Supported (compatible with Deno and Bun; lifecycle is a
-  server-side concept)
+| Runtime  | Version | Status      |
+| -------- | ------- | ----------- |
+| Deno     | 2.9+    | ✅ Supported |
+| Bun      | 1.3+    | ✅ Supported |
+| Node.js  | 22+     | ✅ Supported (since v1.1.0) |
+
+- **Server**: ✅ Supported (Deno/Bun/Node; lifecycle is a server-side concept)
 - **Client**: ❌ Not supported (browser environment; lifecycle is a server-side
   pattern)
 

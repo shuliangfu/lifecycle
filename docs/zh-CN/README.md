@@ -1,18 +1,19 @@
 # @dreamer/lifecycle
 
-> 一个兼容 Deno 和 Bun 的应用生命周期管理包，提供完整的应用生命周期管理功能
+> 一个兼容 Deno、Bun 和 Node.js 的应用生命周期管理包，提供完整的应用生命周期管理功能
 
 > [English](../../README.md) | 中文 (Chinese)
 
 [![JSR](https://jsr.io/badges/@dreamer/lifecycle)](https://jsr.io/@dreamer/lifecycle)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](../../LICENSE)
-[![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed-brightgreen)](./TEST_REPORT.md)
+[![Tests: 82 passed](https://img.shields.io/badge/Tests-82%20passed%20(三端)-brightgreen)](./TEST_REPORT.md)
 
 ---
 
 ## 🎯 功能
 
-应用生命周期管理包，用于管理应用的完整生命周期，包括初始化、启动、运行、停止和关闭等阶段。
+应用生命周期管理包，用于管理应用的完整生命周期，包括初始化、启动、运行、停止和关闭等阶段，
+兼容 Deno、Bun 与 Node.js 22+。
 
 ## ✨ 特性
 
@@ -49,14 +50,33 @@
 
 ## 📦 安装
 
+### Deno
+
 ```bash
 deno add jsr:@dreamer/lifecycle
 ```
 
+### Bun
+
+```bash
+bunx jsr add @dreamer/lifecycle
+```
+
+### Node.js
+
+```bash
+npx jsr add @dreamer/lifecycle
+```
+
 ## 🌍 环境兼容性
 
-- **运行时要求**：Deno 2.6+ 或 Bun 1.3.5
-- **服务端**：✅ 支持（兼容 Deno 和 Bun 运行时，生命周期管理是服务端概念）
+| 运行时   | 版本要求 | 状态                |
+| -------- | -------- | ------------------- |
+| Deno     | 2.9+     | ✅ 完全支持         |
+| Bun      | 1.3+     | ✅ 完全支持         |
+| Node.js  | 22+      | ✅ 完全支持（自 v1.1.0 起） |
+
+- **服务端**：✅ 支持（兼容 Deno/Bun/Node，生命周期管理是服务端概念）
 - **客户端**：❌ 不支持（浏览器环境，生命周期管理是服务端架构模式）
 
 ---
